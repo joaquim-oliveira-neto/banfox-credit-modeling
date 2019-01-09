@@ -1,2 +1,0 @@
-class BdcBasicDatum < ApplicationRecord
-end

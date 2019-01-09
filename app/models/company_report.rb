@@ -1,0 +1,2 @@
+class CompanyReport < ApplicationRecord
+end

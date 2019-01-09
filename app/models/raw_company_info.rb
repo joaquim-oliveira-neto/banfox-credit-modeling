@@ -1,2 +1,0 @@
-class RawCompanyInfo < ApplicationRecord
-end
