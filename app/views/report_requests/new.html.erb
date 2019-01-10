@@ -1,0 +1,13 @@
+<h1>Consulta de empresa</h1>
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <%= simple_form_for(@report_request) do |f| %>
+        <%= f.input :cnpj, label: "CNPF", required: true %>
+        <%= f.button :submit, 'Consultar empresa', class: "btn-primary" %>
+    <% end %>
+  </div>
+  </div>
+</div>
+
