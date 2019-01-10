@@ -12,6 +12,11 @@ class ReportRequestsController < ApplicationController
     redirect_to report_request_path(@report_request)
   end
 
+  def show
+    report_request = ReportRequest.find(params[:id])
+    @data = report_request.company_report.data.to_s
+  end
+
   private
 
   def report_request_params
