@@ -1,5 +1,16 @@
 <h1>Informações da empresa</h1>
 
-<p><%= @data %></p>
-
+<h3>Dados Básicos</h3>
+<ul>
+  <li>Nome: <%= @basic_data["OfficialName"] %></li>
+  <li>Tipo de empresa: <%= @basic_data["LegalNature"]["Activity"] %></li>
+  <li>Idade: <%= @basic_data["Age"] %></li>
+</ul>
+<h3>Endereços</h3>
+<ul>
+  <% @addresses.each do |address| %>
+    <li><%= address %></li>
+  <% end %>
+</ul>
+<h3>Ações Judiciais</h3>
 

@@ -10,4 +10,23 @@ class CompanyReport < ApplicationRecord
     self.data = JSON.parse(data_serialized)
     self.save!
   end
+
+  def informations
+    data.fetch('info').fetch('external_sources').first.fetch('data').fetch('Result')
+  end
+
+  def basic_data
+    informations.fetch("BasicData")
+  end
+
+  def addresses
+    informations.fetch("Addresses").map do |address|
+      "#{address["AddressMain"]}, #{address["Number"]}"
+    end
+  end
+
+  def processes
+    informations.fetch("Processes")
+  end
+
 end

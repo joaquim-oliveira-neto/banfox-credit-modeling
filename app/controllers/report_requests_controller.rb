@@ -14,7 +14,10 @@ class ReportRequestsController < ApplicationController
 
   def show
     report_request = ReportRequest.find(params[:id])
-    @data = report_request.company_report.data.to_s
+    report = report_request.company_report
+    @basic_data = report.basic_data
+    @addresses = report.addresses
+    @processes = report.processes
   end
 
   private
