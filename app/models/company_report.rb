@@ -20,13 +20,23 @@ class CompanyReport < ApplicationRecord
   end
 
   def addresses
-    informations.fetch("Addresses").map do |address|
-      "#{address["AddressMain"]}, #{address["Number"]}"
+    informations.fetch("Addresses")
+  end
+
+  def processes_suitor
+    informations.fetch("Processes").fetch("Lawsuits").select do |process|
+      process["Parties"].any? do |partie|
+        (partie["Type"] == "Requerente") && (partie["Doc"] == self.cnpj)
+      end
     end
   end
 
-  def processes
-    informations.fetch("Processes")
+  def processes_defendant
+    informations.fetch("Processes").fetch("Lawsuits").select do |process|
+      process["Parties"].any? do |partie|
+        (partie["Type"] == "Requerido") && (partie["Doc"] == self.cnpj)
+      end
+    end
   end
 
 end

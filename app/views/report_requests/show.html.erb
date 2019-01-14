@@ -3,13 +3,41 @@
 <h3>Dados Básicos</h3>
 <ul>
   <li>Nome: <%= @basic_data["OfficialName"] %></li>
+  <li><%= @basic_data["IsHeadquarter"] ? "Matriz" : "Filial" %></li>
   <li>Tipo de empresa: <%= @basic_data["LegalNature"]["Activity"] %></li>
-  <li>Idade: <%= @basic_data["Age"] %></li>
+  <li>Fundação: <%= @basic_data["FoundedDate"].to_date %></li>
+  <li>Idade: <%= @basic_data["Age"] %> anos</li>
+  <li>Atividades:
+    <ul>
+      <% @basic_data["Activities"].each do |activity| %>
+      <li> <%= "Principal: " if activity["IsMain"] %> CNAE <%= activity["Code"] %> - <%= activity["Activity"] %>  </li>
+      <% end %>
+    </ul>
+  </li>
+  <li>Status na Receita Federal: <%= @basic_data["TaxIdStatus"] %></li>
+  <% if @basic_data["TaxRegimes"]["Simples"] %>
+    <li>Sujeita ao Simples Nacional</li>
+  <% end %>
+  <% if @basic_data["AdditionalOutputData"]["Capital"] %>
+    <li>Capital Social: <%= @basic_data["AdditionalOutputData"]["Capital"] %></li>
+  <% end %>
 </ul>
-<h3>Endereços</h3>
+<h3>Endereços encontrados</h3>
 <ul>
   <% @addresses.each do |address| %>
-    <li><%= address %></li>
+    <li> Endereço <%= address["IsMain"] ? "principal" : "alternativo" %> :
+      <ul>
+        <li>Logradouro: <%= "#{address["Typology"]} #{address["AddressMain"]}" %></li>
+        <li>Número: <%= address["Number"] %> </li>
+        <li>Complemento: <%= address["Complement"] %></li>
+        <li>Bairro: <%= address["Neighborhood"] %> </li>
+        <li>Cidade: <%= address["City"] %> </li>
+        <li>Estado: <%= address["State"] %> </li>
+        <li>Pais: <%= address["Country"] %> </li>
+        <li>CEP: <%= address["ZipCode"] %> </li>
+        <li>Status: <%= address["IsActive"] ? "ativo" : "inativo" %></li>
+      </ul>
+    </li>
   <% end %>
 </ul>
 <h3>Ações Judiciais</h3>
