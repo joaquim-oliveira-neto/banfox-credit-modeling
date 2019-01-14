@@ -10,7 +10,7 @@
     <% if user_signed_in? %>
 
       <!-- Links when logged in -->
-      <%= link_to "Histórico de consultas", "#", class: "navbar-wagon-item navbar-wagon-link" %>
+      <%= link_to "Histórico de consultas", report_requests_path, class: "navbar-wagon-item navbar-wagon-link" %>
       <%= link_to "Nova consulta",  new_report_request_path, class: "navbar-wagon-item navbar-wagon-link" %>
 
       <!-- Avatar with dropdown menu -->

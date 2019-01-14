@@ -1,4 +1,9 @@
 class ReportRequestsController < ApplicationController
+
+  def index
+    @report_requests = ReportRequest.where(user: current_user).includes(:company_report)
+  end
+
   def new
     @report_request = ReportRequest.new
   end
