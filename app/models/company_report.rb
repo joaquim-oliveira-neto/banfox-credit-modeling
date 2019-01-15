@@ -1,6 +1,5 @@
 class CompanyReport < ApplicationRecord
   has_many :report_requests
-  after_create :fetch_data_from_nogord
 
   def fetch_data_from_nogord
     url = Rails.application.credentials[Rails.env.to_sym][:nogord_url]
@@ -23,20 +22,44 @@ class CompanyReport < ApplicationRecord
     informations.fetch("Addresses")
   end
 
+  def processes
+    informations.fetch("Processes").fetch("Lawsuits")
+  end
+
   def processes_suitor
-    informations.fetch("Processes").fetch("Lawsuits").select do |process|
+    processes.select do |process|
       process["Parties"].any? do |partie|
-        (partie["Type"] == "Requerente") && (partie["Doc"] == self.cnpj)
+        (partie["Polarity"] == "Active") && (partie["Doc"] == self.cnpj)
       end
     end
   end
 
   def processes_defendant
-    informations.fetch("Processes").fetch("Lawsuits").select do |process|
+    processes.select do |process|
       process["Parties"].any? do |partie|
-        (partie["Type"] == "Requerido") && (partie["Doc"] == self.cnpj)
+        (partie["Polarity"] == "Passive") && (partie["Doc"] == self.cnpj)
       end
     end
+  end
+
+  def relationships
+    informations.fetch("Relationships").fetch("Relationships")
+  end
+
+  def activity_indicators
+    informations.fetch("ActivityIndicators")
+  end
+
+  def domains
+    informations.fetch("Domains")
+  end
+
+  def emails
+    informations.fetch("Emails")
+  end
+
+  def phones
+    informations.fetch("Phones")
   end
 
 end
