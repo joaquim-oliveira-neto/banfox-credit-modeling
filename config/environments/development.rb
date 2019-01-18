@@ -62,5 +62,6 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
+  #Joaquim added this to make the 'consultas' routes work
   config.action_dispatch.tld_length = 0
 end
