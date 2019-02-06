@@ -43,7 +43,7 @@ class CompanyReport < ApplicationRecord
   end
 
   def relationships
-    informations.fetch("Relationships").fetch("Relationships")
+    informations.fetch("Relationships")["Relationships"]
   end
 
   def activity_indicators
