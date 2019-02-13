@@ -125,7 +125,7 @@
 
 <h3>Sócios e participações</h3>
 <ul>
-  <% @relationships.each do |relationship| %>
+  <% @relationships.try(:each) do |relationship| %>
     <li><%= relationship["RelationshipName"] %>
       <ul>
         <li>Nome: <%= relationship["RelatedEntityName"] %></li>

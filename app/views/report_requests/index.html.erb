@@ -1,20 +1,22 @@
 <h1>Histórico de requisições</h1>
 
-<table style="width:100%">
-  <tr>
-    <th>CNPJ</th>
-    <th>Data e Hora da requição</th>
-    <th>Preço</th>
-    <th>Relatório</th>
-  </tr>
-  <% @report_requests.each do |report_request| %>
+<div class="container">
+  <table style="width:100%">
     <tr>
-      <td><%= report_request.cnpj %></td>
-      <td><%= report_request.created_at %></td>
-      <td>R$ 0</td>
-      <td><%= link_to "Ver Relatório",  report_request_path(report_request) %></td>
+      <th>ID</th>
+      <th>CNPJ</th>
+      <th>Data e Hora da requição</th>
+      <th>Preço</th>
+      <th>Relatório</th>
     </tr>
-  <% end %>
-
-</table>
-
+    <% @report_requests.each do |report_request| %>
+      <tr>
+        <td><%= report_request.id %></td>
+        <td><%= report_request.cnpj %></td>
+        <td><%= report_request.created_at %></td>
+        <td>R$ 0</td>
+        <td><%= link_to "Ver Relatório",  report_request_path(report_request) %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
