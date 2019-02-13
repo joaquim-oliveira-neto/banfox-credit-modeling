@@ -17,8 +17,11 @@ gem 'uglifier'
 gem 'webpacker'
 gem 'rest-client'
 
+
 group :development do
   gem 'web-console', '>= 3.3.0'
+  # For the Visual Studio Code
+  gem 'solargraph'
 end
 
 group :development, :test do
