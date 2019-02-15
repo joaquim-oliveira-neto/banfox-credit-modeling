@@ -1,5 +1,8 @@
 class CompanyReport < ApplicationRecord
   has_many :report_requests
+  validates :cnpj, format: { with: /\d{14}/, message: "Retire os caracteres especiais" }
+  validates :cnpj, presence: true
+  validates :data, presence: true
 
   def fetch_data_from_nogord
     url = Rails.application.credentials[Rails.env.to_sym][:nogord_url]
@@ -42,8 +45,20 @@ class CompanyReport < ApplicationRecord
     end
   end
 
+  def processes_other
+    processes.reject do |process|
+      process["Parties"].any? do |partie|
+        (partie["Polarity"] == "Passive" || partie["Polarity"] == "Active") && (partie["Doc"] == self.cnpj)
+      end
+    end
+  end
+
+  def relationships_overview
+    informations.fetch("Relationships")
+  end
+
   def relationships
-    informations.fetch("Relationships")["Relationships"]
+    relationships_overview["Relationships"]
   end
 
   def activity_indicators

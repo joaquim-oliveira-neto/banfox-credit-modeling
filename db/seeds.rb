@@ -1,6 +1,7 @@
 user = User.create(
   email: "123@123.com",
-  password: "123123"
+  password: "123123",
+  admin: true,
 )
 
 cnpj1 = "13790732000174"

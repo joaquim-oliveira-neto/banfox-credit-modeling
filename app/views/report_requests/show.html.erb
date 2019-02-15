@@ -3,6 +3,7 @@
 <h3>Dados Básicos</h3>
 <ul>
   <li>Nome: <%= @basic_data["OfficialName"] %></li>
+  <li>CNPJ: <%= @cnpj %> </li>
   <li><%= @basic_data["IsHeadquarter"] ? "Matriz" : "Filial" %></li>
   <li>Tipo de empresa: <%= @basic_data["LegalNature"]["Activity"] %></li>
   <li>Fundação: <%= @basic_data["FoundedDate"].to_date %></li>
@@ -18,9 +19,7 @@
   <% if @basic_data["TaxRegimes"]["Simples"] %>
     <li>Sujeita ao Simples Nacional</li>
   <% end %>
-  <% if @basic_data["AdditionalOutputData"]["Capital"] %>
-    <li>Capital Social: <%= @basic_data["AdditionalOutputData"]["Capital"] %></li>
-  <% end %>
+  <li>Capital Social: <%= @basic_data["AdditionalOutputData"]["Capital"] %></li>
 </ul>
 
 <h3>Indicadores de Atividade</h3>
@@ -58,9 +57,7 @@
       <li>Assunto: <%= process["MainSubject"] %>
         <ul>
           <li>Número: <%= process["Number"] %></li>
-          <% if process["Value"] > 0  %>
-            <li>Valor: <%= process["Value"] %></li>
-          <% end %>
+          <li>Valor: <%= process["Value"] %></li>
           <li>Vara: <%= process["CourtType"] %></li>
           <li>Instância: <%= process["CourtLevel"] %></li>
           <li>Tribunal: <%= process["CourtName"].upcase %></li>
@@ -94,9 +91,7 @@
       <li>Assunto: <%= process["MainSubject"] %>
         <ul>
           <li>Número: <%= process["Number"] %></li>
-          <% if process["Value"] > 0  %>
-            <li>Valor: <%= process["Value"] %></li>
-          <% end %>
+          <li>Valor: <%= process["Value"] %></li>
           <li>Vara: <%= process["CourtType"] %></li>
           <li>Instância: <%= process["CourtLevel"] %></li>
           <li>Tribunal: <%= process["CourtName"].upcase %></li>
@@ -123,12 +118,54 @@
   </ul>
 <% end %>
 
-<h3>Sócios e participações</h3>
+<% unless @processes_other.empty? %>
+  <strong>Demais processos</strong>
+  <ul>
+    <% @processes_other.each do |process| %>
+      <li>Assunto: <%= process["MainSubject"] %>
+        <ul>
+          <li>Número: <%= process["Number"] %></li>
+          <li>Valor: <%= process["Value"] %></li>
+          <li>Tipo do processo: <%= process["Type"] %></li>
+          <li>Vara: <%= process["CourtType"] %></li>
+          <li>Instância: <%= process["CourtLevel"] %></li>
+          <li>Tribunal: <%= process["CourtName"].upcase %></li>
+          <li>Estado: <%= process["State"] %></li>
+          <li>Data de publicação: <%= process["PublicationDate"].to_date %></li>
+          <li>Data da ultima atualização: <%= process["LastUpdate"].to_date %></li>
+          <li>Partes:
+            <ul>
+              <% process["Parties"].each do |partie| %>
+                <li> <%= partie["Type"] %>
+                  <ul>
+                    <% unless partie["Doc"].empty? %>
+                      <li>Documento: <%= partie["Doc"] %></li>
+                    <% end %>
+                    <li>Nome: <%= partie["Name"] %></li>
+                  </ul>
+                </li>
+              <% end %>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<h3>Sócios, participações e colaboradores</h3>
+<ul>
+  <li>Número de funcionários: <%= @relationships_overview["TotalEmployees"] %></li>
+  <li>Número de proprietários: <%= @relationships_overview["TotalOwners"] %></li>
+  <li>Número de relacionamentos: <%= @relationships_overview["TotalRelationships"] %></li>
+</ul>
 <ul>
   <% @relationships.try(:each) do |relationship| %>
     <li><%= relationship["RelationshipName"] %>
       <ul>
         <li>Nome: <%= relationship["RelatedEntityName"] %></li>
+        <li>Tipo do relacionamento: <%= relationship["RelationshipType"] %> </li>
+        <li>Nível do relacionamento: <%= relationship["RelationshipLevel"] %></li>
         <li><%= "#{relationship["RelatedEntityTaxIdType"]}: #{relationship["RelatedEntityTaxIdNumber"]}" %></li>
         <li>Pais de origem do documento: <%= relationship["RelatedEntityTaxIdCountry"] %></li>
       </ul>
@@ -136,14 +173,14 @@
   <% end %>
 </ul>
 
-<% unless @domains.empty? %>
   <h3>Sites</h3>
-  <ul>
-  <% @domains.each do |domain| %>
-    <li><%= domain["FinalDomainName"] %></li>
+  <% unless @domains.empty? %>
+    <ul>
+      <% @domains.each do |domain| %>
+        <li><%= link_to domain["FinalDomainName"], domain["FinalDomainName"] %></li>
+      <% end %>
   <% end %>
   </ul>
-<% end %>
 
 <h3>Emails relacionados encontrados</h3>
 <ul>

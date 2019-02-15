@@ -17,6 +17,9 @@ gem 'uglifier'
 gem 'webpacker'
 gem 'rest-client'
 
+# Used to create an admin interface
+gem 'rails_admin'
+
 
 group :development do
   gem 'web-console', '>= 3.3.0'
