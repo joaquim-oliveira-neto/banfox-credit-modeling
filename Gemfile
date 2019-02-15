@@ -20,6 +20,9 @@ gem 'rest-client'
 # Used to create an admin interface
 gem 'rails_admin'
 
+# Used to create pages on index
+gem 'will_paginate'
+
 
 group :development do
   gem 'web-console', '>= 3.3.0'

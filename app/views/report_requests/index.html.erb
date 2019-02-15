@@ -1,6 +1,7 @@
 <h1>Histórico de requisições</h1>
 
 <div class="container">
+  <%= will_paginate @report_requests %>
   <table style="width:100%">
     <tr>
       <th>ID</th>
@@ -13,7 +14,7 @@
       <tr>
         <td><%= report_request.id %></td>
         <td><%= report_request.cnpj %></td>
-        <td><%= report_request.created_at %></td>
+        <td class="text-left"><%= report_request.created_at.in_time_zone('America/Sao_Paulo').strftime("%d %b %Y - %H:%M") %></td>
         <td>R$ 0</td>
         <td><%= link_to "Ver Relatório",  report_request_path(report_request) %></td>
       </tr>
