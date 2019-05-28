@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.4.4'
+ruby '2.6.3'
 
 gem 'bootsnap', require: false
 gem 'devise'
@@ -37,4 +37,7 @@ group :development, :test do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'dotenv-rails'
+  gem 'factory_bot'
+  gem 'factory_bot_rails'
+  gem 'mocha'
 end
