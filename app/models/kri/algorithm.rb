@@ -1,0 +1,2 @@
+module KRI::Algorithm
+end
