@@ -1,7 +1,9 @@
 class ReportRequestsController < ApplicationController
-
   def index
-    @report_requests = ReportRequest.where(user: current_user).includes(:company_report).order(created_at: :desc).paginate(page: params[:page], per_page: 30)
+    @report_requests = ReportRequest.where(user: current_user)
+                                    .includes(:company_report)
+                                    .order(created_at: :desc)
+                                    .paginate(page: params[:page], per_page: 30)
   end
 
   def new

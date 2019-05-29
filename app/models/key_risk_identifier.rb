@@ -1,2 +1,0 @@
-class KeyRiskIdentifier < ApplicationRecord
-end

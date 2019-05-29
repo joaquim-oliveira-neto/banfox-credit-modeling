@@ -1,8 +1,8 @@
-class KRI::Referee::BaseTest < ActiveSupport::TestCase
+class Risk::Referee::BaseTest < ActiveSupport::TestCase
   #Mocked class
-  class SpecificReferee < KRI::Referee::Base
+  class SpecificReferee < Risk::Referee::Base
     require_external_service :serasa_relato
-    configure_identifier code: 'KRI 0001' ,
+    configure_identifier code: 'Risk 0001' ,
                          title: 'Very Specific Referee',
                          description: 'Very specific description'
 
@@ -22,33 +22,33 @@ class KRI::Referee::BaseTest < ActiveSupport::TestCase
     SpecificReferee.call
   end
 
-  test 'configure KRI title' do
+  test 'configure Risk title' do
     assert SpecificReferee.title == 'Very Specific Referee'
   end
 
-  test 'configure KRI code' do
-    assert SpecificReferee.code == 'KRI 0001'
+  test 'configure Risk code' do
+    assert SpecificReferee.code == 'Risk 0001'
   end
 
-  test 'configure KRI description' do
+  test 'configure Risk description' do
     assert SpecificReferee.description == 'Very specific description'
   end
 
   test 'generate a KeyRiskIdentifier with a red flag' do
     algorithm = SpecificReferee.new
     kri = algorithm.red!
-    assert kri.flag == KRI::Referee::Base::RED_FLAG
+    assert kri.flag == Risk::Referee::Base::RED_FLAG
   end
 
   test 'generate a KeyRiskIdentifier with a yellow flag' do
     algorithm = SpecificReferee.new
     kri = algorithm.yellow!
-    assert kri.flag == KRI::Referee::Base::YELLOW_FLAG
+    assert kri.flag == Risk::Referee::Base::YELLOW_FLAG
   end
 
   test 'generate a KeyRiskIdentifier with a green flag' do
     algorithm = SpecificReferee.new
     kri = algorithm.green!
-    assert kri.flag == KRI::Referee::Base::GREEN_FLAG
+    assert kri.flag == Risk::Referee::Base::GREEN_FLAG
   end
 end

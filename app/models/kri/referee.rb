@@ -1,2 +1,0 @@
-module KRI::Referee
-end
