@@ -1,18 +1,20 @@
 class KRI::Algorithm::BaseTest < ActiveSupport::TestCase
   #Mocked class
   class SpecificAlgorithm < KRI::Algorithm::Base
-    require_document :serasa_relato
+    require_external_service :serasa_relato
     configure_identifier code: 'KRI 0001' ,
                          title: 'Very Specific Algorithm',
                          description: 'Very specific description'
 
-    def call
+    def build_up
+    end
 
+    def call
     end
   end
 
   test 'configure required documents' do
-    assert SpecificAlgorithm.required_documents.count == 1
+    assert SpecificAlgorithm.required_external_services.count == 1
   end
 
   test 'search required documents before executing the algorithm' do

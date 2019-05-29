@@ -1,5 +1,5 @@
 class KRI::Algorithm::Base
-  @@required_documents = []
+  @@required_external_services = []
 
   RED_FLAG = -1
   YELLOW_FLAG = 1
@@ -23,12 +23,12 @@ class KRI::Algorithm::Base
   class << self
     attr_reader :code, :title, :description
 
-    def require_document(document_type)
-      @@required_documents << document_type
+    def require_external_service(document_type)
+      @@required_external_services << document_type
     end
 
-    def required_documents
-      @@required_documents
+    def required_external_services
+      @@required_external_services
     end
 
     def search_documents
@@ -42,7 +42,7 @@ class KRI::Algorithm::Base
     end
 
     def call(*args)
-      if required_documents.any?
+      if required_external_services.any?
         self.search_documents
       end
       new(*args).call
