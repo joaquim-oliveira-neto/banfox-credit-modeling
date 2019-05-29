@@ -1,4 +1,4 @@
-class KRI::Algorithm::Base
+class KRI::Referee::Base
 
   RED_FLAG = -1
   YELLOW_FLAG = 1
