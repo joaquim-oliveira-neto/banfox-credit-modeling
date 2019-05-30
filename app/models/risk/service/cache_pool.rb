@@ -1,7 +1,7 @@
 module Risk
   module Service
     class CachePool
-      attr_reader :cache_engine
+      attr_reader :cache_key
 
       def self.call(service_class, service_params, ttl = 60)
         new(service_class, service_params, ttl).call
@@ -13,8 +13,19 @@ module Risk
         @ttl = ttl
       end
 
+      def cache_engine
+         @cache_engine ||= Redis.new
+      end
+
       def call
         @cache_key = generate_cache_key(@service_class, @service_params)
+        response = cache_engine.get(@cache_key)
+        if response.nil?
+          response = @service_class.call(@service_params)
+          cache_engine.set(@cache_key, response)
+        end
+
+        response
       end
 
       def generate_cache_key(service_class, service_params)
