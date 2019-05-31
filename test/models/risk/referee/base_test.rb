@@ -3,25 +3,12 @@ require 'test_helper'
 class Risk::Referee::BaseTest < ActiveSupport::TestCase
   #Mocked class
   class SpecificReferee < Risk::Referee::Base
-    require_external_service Risk::Service::Serasa
     configure_identifier code: 'Risk 0001' ,
                          title: 'Very Specific Referee',
                          description: 'Very specific description'
 
-    def build_up
-    end
-
     def call
     end
-  end
-
-  test 'configure required documents' do
-    assert_equal SpecificReferee.required_external_services.count, 1
-  end
-
-  test 'search required documents before executing the algorithm' do
-    SpecificReferee.expects(:search_documents)
-    SpecificReferee.call
   end
 
   test 'configure Risk title' do

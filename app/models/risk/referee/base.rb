@@ -23,24 +23,14 @@ module Risk
       class << self
         attr_reader :code, :title, :description, :required_external_services
 
-        def require_external_service(external_service)
-          @required_external_services ||= []
-          @required_external_services << external_service
-        end
-
-        def search_documents
-          # TODO
-        end
-
         def configure_identifier(**params)
           @code = params[:code] unless params[:code].nil?
           @title = params[:title] unless params[:title].nil?
           @description = params[:description] unless params[:description].nil?
         end
 
-        def call(*args)
-          search_documents if required_external_services.any?
-          new(*args).call
+        def call(**args)
+          new.call(args)
         end
       end
     end
