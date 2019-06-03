@@ -2,7 +2,6 @@ version: "3.7"
 services:
   banfox_postgres:
     image: "postgres:11"
-    container_name: "banfox_postgres"
     ports:
       - "5432:5432"
     volumes:
@@ -12,6 +11,8 @@ services:
 
   redis:
     image: redis
+    ports:
+      - 6379:6379
     expose:
       - 6379
 
