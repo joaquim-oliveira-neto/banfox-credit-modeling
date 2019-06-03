@@ -1,10 +1,10 @@
 module Risk
   module Pipeline
     class NewSeller
-      def self.call(seller_cnpj)
+      def self.call(input_data, report)
         [
         ].each do |referee|
-          referee.call(seller_cnpj)
+          referee.call(seller_cnpj, report)
         end
       end
     end
