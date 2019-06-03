@@ -23,6 +23,8 @@ gem 'rails_admin'
 # Used to create pages on index
 gem 'will_paginate'
 
+# Used to validate format of cnpj and cpf
+gem 'cpf_cnpj', git: 'https://github.com/fnando/cpf_cnpj.git'
 
 group :development do
   gem 'web-console', '>= 3.3.0'
