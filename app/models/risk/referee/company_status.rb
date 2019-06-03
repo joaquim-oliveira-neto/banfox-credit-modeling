@@ -5,13 +5,13 @@ module Risk
                            title: 'Company Status',
                            description: 'Check if company status on serasa is active'
 
-      def serasa_response(params)
-        serasa_response = Risk::Service::Serasa.call(params)
-        serasa_response.with_indifferent_access['dados_controle_empresa']['codigo_situacao_empresa']
+      def serasa_data(params)
+        serasa_data = Risk::Service::Serasa.call(params)
+        serasa_data.with_indifferent_access['dados_controle_empresa']['codigo_situacao_empresa']
       end
 
       def call(params)
-        case serasa_response(params)
+        case serasa_data(params)
         when 'ativo'
           green!
         when ''

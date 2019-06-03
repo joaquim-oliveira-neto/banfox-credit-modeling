@@ -1,6 +1,6 @@
-class CreateKeyRiskIdentifiers < ActiveRecord::Migration[5.2]
+class CreateKeyRiskIndicators < ActiveRecord::Migration[5.2]
   def change
-    create_table :key_risk_identifiers do |t|
+    create_table :key_risk_indicators do |t|
       t.string :code
       t.string :title
       t.string :description

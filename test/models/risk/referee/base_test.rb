@@ -23,19 +23,19 @@ class Risk::Referee::BaseTest < ActiveSupport::TestCase
     assert_equal SpecificReferee.description, 'Very specific description'
   end
 
-  test 'generate a KeyRiskIdentifier with a red flag' do
+  test 'generate a KeyRiskIndicator with a red flag' do
     algorithm = SpecificReferee.new
     kri = algorithm.red!
     assert_equal kri.flag, Risk::Referee::Base::RED_FLAG
   end
 
-  test 'generate a KeyRiskIdentifier with a yellow flag' do
+  test 'generate a KeyRiskIndicator with a yellow flag' do
     algorithm = SpecificReferee.new
     kri = algorithm.yellow!
     assert_equal kri.flag, Risk::Referee::Base::YELLOW_FLAG
   end
 
-  test 'generate a KeyRiskIdentifier with a green flag' do
+  test 'generate a KeyRiskIndicator with a green flag' do
     algorithm = SpecificReferee.new
     kri = algorithm.green!
     assert_equal kri.flag, Risk::Referee::Base::GREEN_FLAG

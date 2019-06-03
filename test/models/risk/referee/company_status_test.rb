@@ -71,25 +71,25 @@ module Risk
                              .with({cnpj: mocked_cnpj})
                              .returns(mocked_serasa_response_green)
 
-        Risk::Repository::KeyRiskIdentifier.expects(:create).with(green_params)
+        Risk::Repository::KeyRiskIndicator.expects(:create).with(green_params)
         Risk::Referee::CompanyStatus.call(cnpj: mocked_cnpj)
       end
 
-      test 'genereates a yellow flat is status was not found' do
+      test 'genereates a yellow flag is status was not found' do
         Risk::Service::Serasa.expects(:call)
                              .with({cnpj: mocked_cnpj})
                              .returns(mocked_serasa_response_yellow)
 
-        Risk::Repository::KeyRiskIdentifier.expects(:create).with(yellow_params)
+        Risk::Repository::KeyRiskIndicator.expects(:create).with(yellow_params)
         Risk::Referee::CompanyStatus.call(cnpj: mocked_cnpj)
       end
 
-      test "generates a red flat is status is 'inativo'" do
+      test "generates a red flag is status is 'inativo'" do
         Risk::Service::Serasa.expects(:call)
                              .with({cnpj: mocked_cnpj})
                              .returns(mocked_serasa_response_red)
 
-        Risk::Repository::KeyRiskIdentifier.expects(:create).with(red_params)
+        Risk::Repository::KeyRiskIndicator.expects(:create).with(red_params)
         Risk::Referee::CompanyStatus.call(cnpj: mocked_cnpj)
       end
     end

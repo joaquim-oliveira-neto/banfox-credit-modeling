@@ -7,10 +7,10 @@ class CompanyReport < ApplicationRecord
   def fetch_data_from_nogord
     url = Rails.application.credentials[Rails.env.to_sym][:nogord_url]
     headers = { Content_Type: "application/json", Authorization: Rails.application.credentials[:nogord_token] }
-    body = { cnpj: "#{self.cnpj}" }.to_json
+    body = { cnpj: cnpj.to_s }.to_json
     data_serialized = RestClient.post(url, body, headers)
     self.data = JSON.parse(data_serialized)
-    self.save!
+    save!
   end
 
   def informations
@@ -32,7 +32,7 @@ class CompanyReport < ApplicationRecord
   def processes_suitor
     processes.select do |process|
       process["Parties"].any? do |partie|
-        (partie["Polarity"] == "Active") && (partie["Doc"] == self.cnpj)
+        (partie["Polarity"] == "Active") && (partie["Doc"] == cnpj)
       end
     end
   end
@@ -40,7 +40,7 @@ class CompanyReport < ApplicationRecord
   def processes_defendant
     processes.select do |process|
       process["Parties"].any? do |partie|
-        (partie["Polarity"] == "Passive") && (partie["Doc"] == self.cnpj)
+        (partie["Polarity"] == "Passive") && (partie["Doc"] == cnpj)
       end
     end
   end
@@ -48,7 +48,7 @@ class CompanyReport < ApplicationRecord
   def processes_other
     processes.reject do |process|
       process["Parties"].any? do |partie|
-        (partie["Polarity"] == "Passive" || partie["Polarity"] == "Active") && (partie["Doc"] == self.cnpj)
+        (partie["Polarity"] == "Passive" || partie["Polarity"] == "Active") && (partie["Doc"] == cnpj)
       end
     end
   end
@@ -76,5 +76,4 @@ class CompanyReport < ApplicationRecord
   def phones
     informations.fetch("Phones")
   end
-
 end
