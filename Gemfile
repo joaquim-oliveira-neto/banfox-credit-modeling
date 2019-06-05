@@ -23,6 +23,9 @@ gem 'rails_admin'
 # Used to create pages on index
 gem 'will_paginate'
 
+# Used to create http requests
+gem 'httparty'
+
 # Used to validate format of cnpj and cpf
 gem 'cpf_cnpj', git: 'https://github.com/fnando/cpf_cnpj.git'
 
