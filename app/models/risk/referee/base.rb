@@ -21,12 +21,20 @@ module Risk
       end
 
       class << self
-        attr_reader :code, :title, :description, :required_external_services
+        attr_reader :code, :title, :description, :services
 
         def configure_identifier(**params)
           @code = params[:code] unless params[:code].nil?
           @title = params[:title] unless params[:title].nil?
           @description = params[:description] unless params[:description].nil?
+        end
+
+        def prefetch_services(*services)
+          @@services = services
+        end
+
+        def services
+          @@services
         end
 
         def call(**args)

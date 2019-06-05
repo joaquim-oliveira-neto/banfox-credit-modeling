@@ -7,30 +7,6 @@ module Risk
         '11111111102'
       end
 
-      def mocked_serasa_response_green
-        {
-          "dados_controle_empresa": {
-            "codigo_situacao_empresa": "ativo"
-          }
-        }
-      end
-
-      def mocked_serasa_response_yellow
-        {
-          "dados_controle_empresa": {
-            "codigo_situacao_empresa": ''
-          }
-        }
-      end
-
-      def mocked_serasa_response_red
-        {
-          "dados_controle_empresa": {
-            "codigo_situacao_empresa": "inativo"
-          }
-        }
-      end
-
       def green_params
         {
           code: 'Referee::CompanyStatus',
@@ -58,39 +34,28 @@ module Risk
         }
       end
 
-      test "calls Serasa service" do
-        Risk::Service::Serasa.expects(:call)
-                             .with({cnpj: mocked_cnpj})
-                             .returns(mocked_serasa_response_green)
-
-        Risk::Referee::CompanyStatus.call(cnpj: mocked_cnpj)
-      end
-
       test "generates a green flag if status is 'ativo'" do
-        Risk::Service::Serasa.expects(:call)
-                             .with({cnpj: mocked_cnpj})
-                             .returns(mocked_serasa_response_green)
+        presenter = mock()
+        presenter.stubs(:status).returns('ativo')
 
         Risk::Repository::KeyRiskIndicator.expects(:create).with(green_params)
-        Risk::Referee::CompanyStatus.call(cnpj: mocked_cnpj)
+        Risk::Referee::CompanyStatus.call(company: presenter)
       end
 
       test 'genereates a yellow flag is status was not found' do
-        Risk::Service::Serasa.expects(:call)
-                             .with({cnpj: mocked_cnpj})
-                             .returns(mocked_serasa_response_yellow)
+        presenter = mock()
+        presenter.stubs(:status).returns('')
 
         Risk::Repository::KeyRiskIndicator.expects(:create).with(yellow_params)
-        Risk::Referee::CompanyStatus.call(cnpj: mocked_cnpj)
+        Risk::Referee::CompanyStatus.call(company: presenter)
       end
 
       test "generates a red flag is status is 'inativo'" do
-        Risk::Service::Serasa.expects(:call)
-                             .with({cnpj: mocked_cnpj})
-                             .returns(mocked_serasa_response_red)
+        presenter = mock()
+        presenter.stubs(:status).returns('inativo')
 
         Risk::Repository::KeyRiskIndicator.expects(:create).with(red_params)
-        Risk::Referee::CompanyStatus.call(cnpj: mocked_cnpj)
+        Risk::Referee::CompanyStatus.call(company: presenter)
       end
     end
   end

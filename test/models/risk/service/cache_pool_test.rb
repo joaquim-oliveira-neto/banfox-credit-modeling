@@ -1,5 +1,4 @@
-require 'test_helper'
-
+require 'test_helper' 
 class Risk::Service::CachePoolTest < ActiveSupport::TestCase
   class MockedService
   end
@@ -56,11 +55,14 @@ class Risk::Service::CachePoolTest < ActiveSupport::TestCase
     MockedService.stubs(:call).returns(mocked_response)
     response = Risk::Service::CachePool.call(MockedService, service_params)
 
-    assert_equal response, mocked_response
+    expected = {
+      :"#{cache_key}" => mocked_response
+    }
+    assert_equal expected, response
   end
 
   test 'generate the correct cache key' do
-    cache_key = cache_pool.generate_cache_key(MockedService, {param_1: 1, param_2: 2})
+    cache_key = Risk::Service::CachePool.generate_cache_key(MockedService, {param_1: 1, param_2: 2})
     expected_value = 'risk-service-cachepooltest-mockedservice_param_1param_2_12'
 
     assert_equal cache_key, expected_value

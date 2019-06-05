@@ -18,17 +18,17 @@ module Risk
       end
 
       def call
-        @cache_key = generate_cache_key(@service_class, @service_params)
+        @cache_key = self.class.generate_cache_key(@service_class, @service_params)
         response = cache_engine.get(@cache_key)
         if response.nil?
           response = @service_class.call(@service_params)
           cache_engine.set(@cache_key, response)
         end
 
-        response
+        { :"#{@cache_key}" => response }
       end
 
-      def generate_cache_key(service_class, service_params)
+      def self.generate_cache_key(service_class, service_params)
         key_string   = service_params.keys.reduce('') { |r, v| r + v.to_s }
         value_string = service_params.values.reduce('') { |r, v| r + v.to_s }
 
