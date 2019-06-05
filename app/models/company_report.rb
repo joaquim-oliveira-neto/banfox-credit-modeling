@@ -14,19 +14,19 @@ class CompanyReport < ApplicationRecord
   end
 
   def informations
-    data.fetch('info').fetch('external_sources').first.fetch('data').fetch('Result')
+    data&.fetch('info')&.fetch('external_sources')&.first&.fetch('data')&.fetch('Result')
   end
 
   def basic_data
-    informations.fetch("BasicData")
+    informations&.fetch("BasicData")
   end
 
   def addresses
-    informations.fetch("Addresses")
+    informations&.fetch("Addresses")
   end
 
   def processes
-    informations.fetch("Processes").fetch("Lawsuits")
+    informations&.fetch("Processes")&.fetch("Lawsuits")
   end
 
   def processes_suitor
@@ -34,7 +34,7 @@ class CompanyReport < ApplicationRecord
       process["Parties"].any? do |partie|
         (partie["Polarity"] == "Active") && (partie["Doc"] == cnpj)
       end
-    end
+    end unless processes.nil?
   end
 
   def processes_defendant
@@ -42,7 +42,7 @@ class CompanyReport < ApplicationRecord
       process["Parties"].any? do |partie|
         (partie["Polarity"] == "Passive") && (partie["Doc"] == cnpj)
       end
-    end
+    end unless processes.nil?
   end
 
   def processes_other
@@ -50,30 +50,30 @@ class CompanyReport < ApplicationRecord
       process["Parties"].any? do |partie|
         (partie["Polarity"] == "Passive" || partie["Polarity"] == "Active") && (partie["Doc"] == cnpj)
       end
-    end
+    end unless processes.nil?
   end
 
   def relationships_overview
-    informations.fetch("Relationships")
+    informations&.fetch("Relationships")
   end
 
   def relationships
-    relationships_overview["Relationships"]
+    relationships_overview["Relationships"] unless relationships_overview.nil?
   end
 
   def activity_indicators
-    informations.fetch("ActivityIndicators")
+    informations&.fetch("ActivityIndicators")
   end
 
   def domains
-    informations.fetch("Domains")
+    informations&.fetch("Domains")
   end
 
   def emails
-    informations.fetch("Emails")
+    informations&.fetch("Emails")
   end
 
   def phones
-    informations.fetch("Phones")
+    informations&.fetch("Phones")
   end
 end

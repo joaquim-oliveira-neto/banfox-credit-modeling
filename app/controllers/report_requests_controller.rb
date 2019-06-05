@@ -38,6 +38,10 @@ class ReportRequestsController < ApplicationController
     @domains = report.domains
     @emails = report.emails
     @phones = report.phones
+
+    @basic_data ||= {}
+    @activity_indicators ||= {}
+    @relationships_overview ||= {}
   end
 
   private
