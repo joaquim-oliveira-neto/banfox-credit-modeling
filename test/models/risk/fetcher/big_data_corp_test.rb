@@ -14,15 +14,14 @@ module Risk
       test 'calls BigBoost API' do
         HTTParty.expects(:get).returns(true)
 
-        Risk::Fetcher::BigDataCorp.new(cnpj: cnpj).basic_data.call
+        Risk::Fetcher::BigDataCorp.new(cnpj: cnpj).company_basic_data.call
       end
 
       test 'do not call basic_data if cnpj is invalid' do
         HTTParty.expects(:get).never
 
         expected = false
-        byebug
-        assert_equal expected, Risk::Fetcher::BigDataCorp.new(cnpj: invalid_cnpj).basic_data.call
+        assert_equal expected, Risk::Fetcher::BigDataCorp.new(cnpj: invalid_cnpj).company_basic_data.call
       end
     end
   end

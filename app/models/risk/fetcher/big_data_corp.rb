@@ -1,28 +1,30 @@
 module Risk
   module Fetcher
     class BigDataCorp
-      attr_reader :cnpj, :access_token
+      attr_reader :cnpj, :access_token, :params
 
       def self.call(cnpj)
         new(cnpj)
       end
 
-      def initialize(query)
-        @query = query
-        @query['AccessToken'] = Rails.application.credentials.big_boost_api_token
+      def initialize(params)
+        @params = params.with_indifferent_access
+        @query = {
+          'AccessToken' => Rails.application.credentials.big_boost_api_token
+        }
       end
 
       def invalid_params!
         @invalid_params = true
       end
 
-      def self.basic_data(cnpj)
-        invalid_params! unless CNPJ.valid?(cnpj)
-        query = {
+      def company_basic_data
+        invalid_params! unless CNPJ.valid?(@params[:cnpj])
+        @query = {
           'Datasets' => 'basic_data',
           'q' => "doc{#{cnpj}}",
         }
-        new(query)
+        self
       end
 
       def call
