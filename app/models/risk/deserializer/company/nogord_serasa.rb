@@ -12,33 +12,46 @@ module Risk
         end
 
         def summary(data)
-          byebug
+          {
+            serasa_searches: count_serasa_searches(data['consultas_serasa']),
+            last_serasa_search_date: last_serasa_search_date(data['consultas_serasa'])
+          }.with_indifferent_access
         end
 
         def last_pefin(data)
           return nil unless data.any?
-          first_date = Date.parse(data.first['data_ocorrencia'])
-          @last_pefin ||= data.inject(first_date) do |fd, pefin|
-            ocurrence = Date.parse(pefin['data_ocorrencia'])
-            return pefin if ocurrence > first_date
 
-            data.first
+          @last_pefin ||= data.inject(data.first) do |last, current|
+            current_date = Date.parse(current['data_ocorrencia'])
+            last_date = Date.parse(last['data_ocorrencia'])
+
+            current_date > last_date ? current : last
           end
-
-          @last_pefin
         end
 
         def last_refin(data)
           return nil unless data.any?
-          first_date = Date.parse(data.first['data_ocorrencia'])
-          @last_refin ||= data.inject(first_date) do |fd, refin|
-            ocurrence = Date.parse(refin['data_ocorrencia'])
-            return refin if ocurrence > first_date
+          @last_refin ||= data.inject(data.first) do |last, current|
+            current_refin = Date.parse(current['data_ocorrencia'])
+            last_refin = Date.parse(last['data_ocorrencia'])
+            return current if current_refin > last_refin
 
-            data.first
+            last
           end
 
           @last_refin
+        end
+
+        def last_serasa_search_date(data)
+          return nil unless data.any?
+          first_hash = data.first.with_indifferent_access
+          first_date = Date.new(first_hash[:ano_consulta] + 2000, first_hash[:mes_consulta], 1)
+          @last_serasa_search ||= data.inject(first_date) do |fd, serasa_search|
+            ocurrence = Date.new(serasa_search['ano_consulta'] + 2000, serasa_search['mes_consulta'], 1)
+            return ocurrence if ocurrence > fd
+
+            fd
+          end
         end
 
         def count_serasa_searches(data)
