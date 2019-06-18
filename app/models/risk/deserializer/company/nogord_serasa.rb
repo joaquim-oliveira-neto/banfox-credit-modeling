@@ -2,38 +2,41 @@ module Risk
   module Deserializer
     module Company
       class NogordSerasa
-        def self.call(data=nil)
-        end
-
-        def initialize(data=nil)
+        def initialize(data)
+          @data = data
         end
 
         def call
+          {
+            summary: summary(@data)
+          }
         end
 
         def summary(data)
           {
-            serasa_searches: count_serasa_searches(data['consultas_serasa']),
-            last_serasa_search_date: last_serasa_search_date(data['consultas_serasa']),
+            serasa_searches: {
+              quantity: count_serasa_searches(data['consultas_serasa']),
+              last_occurrence: last_serasa_search_date(data['consultas_serasa']),
+            },
             pefin: {
               quantity: count_pefin(data['pendencias_financeiras_pefin']),
               value: pefin_value(data['pendencias_financeiras_pefin']),
-              last_ocurrence: pefin_last_ocurrence(data['pendencias_financeiras_pefin'])
+              last_occurrence: pefin_last_occurrence(data['pendencias_financeiras_pefin'])
             },
             refin: {
               quantity: count_refin(data['pendencias_financeiras_refin']),
               value: refin_value(data['pendencias_financeiras_refin']),
-              last_ocurrence: refin_last_ocurrence(data['pendencias_financeiras_refin'])
+              last_occurrence: refin_last_occurrence(data['pendencias_financeiras_refin'])
             },
             protest: {
               quantity: count_protest(data['informacoes_concentre_protestos']),
               value: protest_value(data['informacoes_concentre_protestos']),
-              last_ocurrence: protest_last_ocurrence(data['informacoes_concentre_protestos'])
+              last_occurrence: protest_last_occurrence(data['informacoes_concentre_protestos'])
             },
             lawsuit: {
               quantity: count_lawsuit(data['informacoes_concentre_acoes_judiciais']),
               value: lawsuit_value(data['informacoes_concentre_acoes_judiciais']),
-              last_ocurrence: lawsuit_last_ocurrence(data['informacoes_concentre_acoes_judiciais']),
+              last_occurrence: lawsuit_last_occurrence(data['informacoes_concentre_acoes_judiciais']),
             }
           }.with_indifferent_access
         end
@@ -58,8 +61,6 @@ module Risk
 
             last
           end
-
-          @last_refin
         end
 
         def last_serasa_search_date(data)
@@ -67,8 +68,8 @@ module Risk
           first_hash = data.first.with_indifferent_access
           first_date = Date.new(first_hash[:ano_consulta] + 2000, first_hash[:mes_consulta], 1)
           @last_serasa_search ||= data.inject(first_date) do |fd, serasa_search|
-            ocurrence = Date.new(serasa_search['ano_consulta'] + 2000, serasa_search['mes_consulta'], 1)
-            return ocurrence if ocurrence > fd
+            occurrence = Date.new(serasa_search['ano_consulta'] + 2000, serasa_search['mes_consulta'], 1)
+            return occurrence if occurrence > fd
 
             fd
           end
@@ -100,7 +101,7 @@ module Risk
           last_pefin(data)['valor']
         end
 
-        def pefin_last_ocurrence(data)
+        def pefin_last_occurrence(data)
           Date.parse(last_pefin(data)['data_ocorrencia'])
         end
 
@@ -112,22 +113,20 @@ module Risk
           last_refin(data)['valor']
         end
 
-        def refin_last_ocurrence(data)
-          last_ocurrence = last_refin(data)['data_ocorrencia']
-          Date.parse(last_ocurrence)
+        def refin_last_occurrence(data)
+          last_occurrence = last_refin(data)['data_ocorrencia']
+          Date.parse(last_occurrence)
         end
 
         def last_protest(data)
           return nil unless data.any?
           first_date = Date.parse(data.first['data_protesto'])
           @last_protest ||= data.inject(first_date) do |fd, refin|
-            ocurrence = Date.parse(refin['data_protesto'])
-            return refin if ocurrence > first_date
+            occurrence = Date.parse(refin['data_protesto'])
+            return refin if occurrence > first_date
 
             data.first
           end
-
-          @last_protest
         end
 
         def count_protest(data)
@@ -138,9 +137,9 @@ module Risk
           last_protest(data)['valor_protesto']
         end
 
-        def protest_last_ocurrence(data)
-          last_ocurrence = last_protest(data)['data_protesto']
-          Date.parse(last_ocurrence)
+        def protest_last_occurrence(data)
+          last_occurrence = last_protest(data)['data_protesto']
+          Date.parse(last_occurrence)
         end
 
         def count_lawsuit(data)
@@ -153,11 +152,11 @@ module Risk
           end
         end
 
-        def lawsuit_last_ocurrence(data)
-          first_ocurrence = Date.parse(data.first['data_acao_judicial'])
-          data.inject(first_ocurrence) do |fo, lo|
-            last_ocurrence = Date.parse(lo['data_acao_judicial'])
-            return last_ocurrence if last_ocurrence > first_ocurrence
+        def lawsuit_last_occurrence(data)
+          first_occurrence = Date.parse(data.first['data_acao_judicial'])
+          data.inject(first_occurrence) do |fo, lo|
+            last_occurrence = Date.parse(lo['data_acao_judicial'])
+            return last_occurrence if last_occurrence > first_occurrence
 
             fo
           end
