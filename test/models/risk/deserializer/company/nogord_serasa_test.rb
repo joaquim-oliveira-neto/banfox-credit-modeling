@@ -15,7 +15,27 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
   test '.summary' do
     expected = {
       serasa_searches: 194,
-      last_serasa_search_date: Date.new(2019, 6, 1)
+      last_serasa_search_date: Date.new(2019, 6, 1),
+      pefin: {
+        quantity: 45,
+        value: 407,
+        last_ocurrence: Date.new(2019, 1, 21)
+      },
+      refin: {
+        quantity: 9,
+        value: 12857,
+        last_ocurrence: Date.new(2018,11,22)
+      },
+      protest: {
+        quantity: 276,
+        value: 1560,
+        last_ocurrence: Date.new(2019, 5, 9)
+      },
+      lawsuit: {
+        quantity: 2,
+        value: 762504,
+        last_ocurrence: Date.new(2018, 5, 28)
+      }
     }.with_indifferent_access
 
     assert_equal expected, subject.summary(serasa_data)

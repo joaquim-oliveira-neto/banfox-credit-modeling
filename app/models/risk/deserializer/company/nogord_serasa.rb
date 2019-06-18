@@ -14,7 +14,27 @@ module Risk
         def summary(data)
           {
             serasa_searches: count_serasa_searches(data['consultas_serasa']),
-            last_serasa_search_date: last_serasa_search_date(data['consultas_serasa'])
+            last_serasa_search_date: last_serasa_search_date(data['consultas_serasa']),
+            pefin: {
+              quantity: count_pefin(data['pendencias_financeiras_pefin']),
+              value: pefin_value(data['pendencias_financeiras_pefin']),
+              last_ocurrence: pefin_last_ocurrence(data['pendencias_financeiras_pefin'])
+            },
+            refin: {
+              quantity: count_refin(data['pendencias_financeiras_refin']),
+              value: refin_value(data['pendencias_financeiras_refin']),
+              last_ocurrence: refin_last_ocurrence(data['pendencias_financeiras_refin'])
+            },
+            protest: {
+              quantity: count_protest(data['informacoes_concentre_protestos']),
+              value: protest_value(data['informacoes_concentre_protestos']),
+              last_ocurrence: protest_last_ocurrence(data['informacoes_concentre_protestos'])
+            },
+            lawsuit: {
+              quantity: count_lawsuit(data['informacoes_concentre_acoes_judiciais']),
+              value: lawsuit_value(data['informacoes_concentre_acoes_judiciais']),
+              last_ocurrence: lawsuit_last_ocurrence(data['informacoes_concentre_acoes_judiciais']),
+            }
           }.with_indifferent_access
         end
 
