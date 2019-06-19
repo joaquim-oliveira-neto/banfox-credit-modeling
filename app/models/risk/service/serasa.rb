@@ -12,10 +12,14 @@ module Risk
       end
 
       def call
-        fetch_data(cnpj)
+        data = fetch_data(cnpj)
+
+        Risk::Deserializer::Company::NogordSerasa.new(data).call
       end
 
-      def fetch_data
+      def fetch_data(cnpj)
+        @data ||= Risk::Fetcher::NogordSerasa.call(cnpj)
+        @data['info']['external_sources'].first['data']
       end
     end
   end

@@ -8,7 +8,7 @@ module Risk
 
         def call
           {
-            summary: summary(@data)
+            summary: Risk::Entity::Serasa::CompanySummary.new(summary(@data))
           }
         end
 

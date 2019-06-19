@@ -15,7 +15,6 @@ module Risk
         def call
         end
       end
-
       
       test 'configure Risk title' do
         expected = 'Very Specific Referee'

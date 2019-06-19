@@ -38,7 +38,7 @@ module Risk
         presenter = mock()
         presenter.stubs(:status).returns('ativo')
 
-        Risk::Repository::KeyRiskIndicator.expects(:create).with(green_params)
+        Risk::Repository::KeyIndicator.expects(:create).with(green_params)
         Risk::Referee::CompanyStatus.call(company: presenter)
       end
 
@@ -46,7 +46,7 @@ module Risk
         presenter = mock()
         presenter.stubs(:status).returns('')
 
-        Risk::Repository::KeyRiskIndicator.expects(:create).with(yellow_params)
+        Risk::Repository::KeyIndicator.expects(:create).with(yellow_params)
         Risk::Referee::CompanyStatus.call(company: presenter)
       end
 
@@ -54,7 +54,7 @@ module Risk
         presenter = mock()
         presenter.stubs(:status).returns('inativo')
 
-        Risk::Repository::KeyRiskIndicator.expects(:create).with(red_params)
+        Risk::Repository::KeyIndicator.expects(:create).with(red_params)
         Risk::Referee::CompanyStatus.call(company: presenter)
       end
     end

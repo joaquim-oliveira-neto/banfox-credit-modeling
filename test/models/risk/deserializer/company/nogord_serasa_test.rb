@@ -1,6 +1,8 @@
+require 'test_helper'
+
 class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
   def subject
-    @subject ||= Risk::Deserializer::Company::NogordSerasa.new
+    @subject ||= Risk::Deserializer::Company::NogordSerasa.new(serasa_data)
   end
 
   def nogord_response
@@ -12,29 +14,37 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
     nogord_response['info']['external_sources'].first['data']
   end
 
+  test '.call' do
+    subject.expects(:summary)
+
+    subject.call
+  end
+
   test '.summary' do
     expected = {
-      serasa_searches: 194,
-      last_serasa_search_date: Date.new(2019, 6, 1),
+      serasa_searches: {
+        quantity: 194,
+        last_occurrence: Date.new(2019, 6, 1)
+      },
       pefin: {
         quantity: 45,
         value: 407,
-        last_ocurrence: Date.new(2019, 1, 21)
+        last_occurrence: Date.new(2019, 1, 21)
       },
       refin: {
         quantity: 9,
         value: 12857,
-        last_ocurrence: Date.new(2018,11,22)
+        last_occurrence: Date.new(2018,11,22)
       },
       protest: {
         quantity: 276,
         value: 1560,
-        last_ocurrence: Date.new(2019, 5, 9)
+        last_occurrence: Date.new(2019, 5, 9)
       },
       lawsuit: {
         quantity: 2,
         value: 762504,
-        last_ocurrence: Date.new(2018, 5, 28)
+        last_occurrence: Date.new(2018, 5, 28)
       }
     }.with_indifferent_access
 
@@ -166,7 +176,7 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
     assert_equal 150, subject.pefin_value(data)
   end
 
-  test '.pefin_last_ocurrence' do
+  test '.pefin_last_occurrence' do
     data = [
       {
         'quantidade_pendencias_financeiras' => 45,
@@ -185,7 +195,7 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
       }
     ]
 
-    assert_equal Date.new(2019, 1 ,26), subject.pefin_last_ocurrence(data)
+    assert_equal Date.new(2019, 1 ,26), subject.pefin_last_occurrence(data)
   end
 
   test '.last_refin' do
@@ -251,7 +261,7 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
     assert_equal 150, subject.refin_value(data)
   end
 
-  test '.refin_last_ocurrence' do
+  test '.refin_last_occurrence' do
     data = [
       {
         'quantidade_refinanciamento' => 45,
@@ -265,7 +275,7 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
       }
     ]
 
-    assert_equal Date.new(2019, 1, 23), subject.refin_last_ocurrence(data)
+    assert_equal Date.new(2019, 1, 23), subject.refin_last_occurrence(data)
   end
 
   test '.last_protest' do
@@ -329,7 +339,7 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
     assert_equal 1560, subject.protest_value(data)
   end
 
-  test '.protest_last_ocurrence' do
+  test '.protest_last_occurrence' do
     data = [
       {
         "data_protesto" => "09/04/2019",
@@ -345,7 +355,7 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
       }
     ]
 
-    assert_equal Date.new(2019, 5, 9), subject.protest_last_ocurrence(data)
+    assert_equal Date.new(2019, 5, 9), subject.protest_last_occurrence(data)
   end
 
   test '.count_lawsuit' do
@@ -386,7 +396,7 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
     assert_equal 762504, subject.lawsuit_value(data)
   end
 
-  test '.lawsuit_last_ocurrence' do
+  test '.lawsuit_last_occurrence' do
     data = [
       {
         'quantidade_ocorrencias'=> 2,
@@ -402,6 +412,6 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
       }
     ]
 
-    assert_equal Date.new(2018,5,28), subject.lawsuit_last_ocurrence(data)
+    assert_equal Date.new(2018,5,28), subject.lawsuit_last_occurrence(data)
   end
 end
