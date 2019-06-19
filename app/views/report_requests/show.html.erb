@@ -5,21 +5,21 @@
   <li>Nome: <%= @basic_data["OfficialName"] %></li>
   <li>CNPJ: <%= @cnpj %> </li>
   <li><%= @basic_data["IsHeadquarter"] ? "Matriz" : "Filial" %></li>
-  <li>Tipo de empresa: <%= @basic_data["LegalNature"]["Activity"] %></li>
-  <li>Fundação: <%= @basic_data["FoundedDate"].to_date %></li>
+  <li>Tipo de empresa: <%= @basic_data["LegalNature"]&["Activity"] %></li>
+  <li>Fundação: <%= @basic_data["FoundedDate"] %></li>
   <li>Idade: <%= @basic_data["Age"] %> anos</li>
   <li>Atividades:
     <ul>
-      <% @basic_data["Activities"].each do |activity| %>
+      <% @basic_data["Activities"]&.each do |activity| %>
       <li> <%= "Principal: " if activity["IsMain"] %> CNAE <%= activity["Code"] %> - <%= activity["Activity"] %>  </li>
       <% end %>
     </ul>
   </li>
   <li>Status na Receita Federal: <%= @basic_data["TaxIdStatus"] %></li>
-  <% if @basic_data["TaxRegimes"]["Simples"] %>
+  <% if @basic_data["TaxRegimes"]&["Simples"] %>
     <li>Sujeita ao Simples Nacional</li>
   <% end %>
-  <li>Capital Social: <%= @basic_data["AdditionalOutputData"]["Capital"] %></li>
+  <li>Capital Social: <%= @basic_data["AdditionalOutputData"]&["Capital"] %></li>
 </ul>
 
 <h3>Indicadores de Atividade</h3>
@@ -32,7 +32,7 @@
 
 <h3>Endereços encontrados</h3>
 <ul>
-  <% @addresses.each do |address| %>
+  <% @addresses&.each do |address| %>
     <li> Endereço <%= address["IsMain"] ? "principal" : "alternativo" %> :
       <ul>
         <li>Logradouro: <%= "#{address["Typology"]} #{address["AddressMain"]}" %></li>
@@ -50,7 +50,7 @@
 </ul>
 
 <h3>Ações Judiciais</h3>
-<% unless @processes_defendant.empty? %>
+<% unless @processes_defendant.nil? %>
   <strong>Contra a empresa</strong>
   <ul>
     <% @processes_defendant.each do |process| %>
@@ -84,7 +84,7 @@
   </ul>
 <% end %>
 
-<% unless @processes_suitor.empty? %>
+<% unless @processes_suitor.nil? %>
   <strong>Abertos pela empresa</strong>
   <ul>
     <% @processes_suitor.each do |process| %>
@@ -118,7 +118,7 @@
   </ul>
 <% end %>
 
-<% unless @processes_other.empty? %>
+<% unless @processes_other.nil? %>
   <strong>Demais processos</strong>
   <ul>
     <% @processes_other.each do |process| %>
@@ -174,7 +174,7 @@
 </ul>
 
   <h3>Sites</h3>
-  <% unless @domains.empty? %>
+  <% unless @domains.nil? %>
     <ul>
       <% @domains.each do |domain| %>
         <li><%= link_to domain["FinalDomainName"], domain["FinalDomainName"] %></li>
@@ -184,7 +184,7 @@
 
 <h3>Emails relacionados encontrados</h3>
 <ul>
-  <% @emails.each do |email| %>
+  <% @emails&.each do |email| %>
     <li>Email <%= email["IsMain"] ? "principal" : "alternativo" %>:
       <ul>
         <li><%= email["EmailAddress"] %></li>
@@ -197,7 +197,7 @@
 
 <h3>Telefones relacionados encontrados</h3>
 <ul>
-  <% @phones.each do |phone| %>
+  <% @phones&.each do |phone| %>
     <li>Telefone <%= phone["IsMain"] ? "principal" : "alternativo" %>:
       <ul>
         <li>+<%= phone["CountryCode"] %> <%= phone["AreaCode"] %> <%= phone["Number"] %></li>

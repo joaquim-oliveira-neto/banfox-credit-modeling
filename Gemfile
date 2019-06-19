@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
-ruby '2.5.3'
+
+ruby '2.6.3'
 
 gem 'bootsnap', require: false
 gem 'devise'
@@ -23,6 +24,11 @@ gem 'rails_admin'
 # Used to create pages on index
 gem 'will_paginate'
 
+# Used to create http requests
+gem 'httparty'
+
+# Used to validate format of cnpj and cpf
+gem 'cpf_cnpj', git: 'https://github.com/fnando/cpf_cnpj.git'
 
 group :development do
   gem 'web-console', '>= 3.3.0'
@@ -37,4 +43,7 @@ group :development, :test do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'dotenv-rails'
+  gem 'factory_bot'
+  gem 'factory_bot_rails'
+  gem 'mocha'
 end

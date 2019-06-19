@@ -23,6 +23,9 @@ default: &default
 
 development:
   <<: *default
+  host: localhost
+  username: postgres
+  password: secretpass
   database: banfox-credit-modeling_development
 
   # The specified database role being used to connect to postgres.
@@ -58,6 +61,11 @@ development:
 test:
   <<: *default
   database: banfox-credit-modeling_test
+  host: 0.0.0.0
+  port: 5432
+  username: postgres
+  password: secretpass
+  database: mvpinvest_development
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
