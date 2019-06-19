@@ -13,7 +13,7 @@ module Risk
       def call
         return false unless validate_input_data
 
-        report = Risk::Repository::KeyRiskIndicatorReport.create(input_data: @input_data)
+        report = Risk::Repository::KeyIndicatorReport.create(input_data: @input_data)
         pipeline_strategy(@pipeline).call(@input_data, report)
 
         report
