@@ -11,7 +11,7 @@ module Risk
         yellow: YELLOW_FLAG
       }.each do |method, flag|
         define_method(:"#{method}!") do
-          ::Risk::Repository::KeyRiskIndicator.create(
+          ::Risk::Repository::KeyIndicator.create(
             title: self.class.title,
             description: self.class.description,
             code: self.class.code,
