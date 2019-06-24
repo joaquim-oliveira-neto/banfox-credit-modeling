@@ -9,7 +9,7 @@ module Risk
         def call
           {
             summary: Risk::Entity::Serasa::CompanySummary.new(summary(@data)),
-            corporate_control: Risk::Entity::Serasa::CorporateControl.new(corporate_control(@data))
+            corporate_control: Risk::Entity::Serasa::CorporateControl.new(corporate_control(@data)),
           }
         end
 
@@ -49,7 +49,17 @@ module Risk
           }.with_indifferent_access
         end
 
-        def share_capital(data)
+        def admin_group(data)
+          data.map do |admin_data|
+            {
+              fullname: admin_data['nome_administrador'],
+              cpf: admin_data['cnpj_cpf_socio'],
+              nationality: admin_data['nacionalidade'],
+              civil_state: admin_data['estado_civil'],
+              role: admin_data['cargo'],
+              sign_in_at: Date.parse(admin_data['data_inicio_mandato']),
+            }
+          end
         end
 
         def last_pefin(data)

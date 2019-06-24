@@ -76,6 +76,42 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
     assert_equal expected, subject.corporate_control(data)
   end
 
+  test '.admin_group' do
+    #"quadro_administrativo_detalhes": [
+    data = [
+      {
+        "identificacao": "F",
+        "cnpj_cpf_socio": "508218908",
+        "codigo_situacao_administrador": "09",
+        "data_entrada": "30/09/1971",
+        "codigo_socio_consistido": "7",
+        "cnpj_sequencia": "0000",
+        "digito_cpf": "59",
+        "nome_administrador": "ESPOLIO DE HAROLDO CASTELLO BRANCO",
+        "cargo": "DIRETOR",
+        "nacionalidade": "BRASIL",
+        "estado_civil": "CASADO",
+        "data_inicio_mandato": "30/09/1971",
+        "data_fim_mandato": "99999999",
+        "indicador_restricao": "S",
+        "codigo_cargo": "022"
+      }.with_indifferent_access
+    ]
+
+    expected = [
+      {
+        fullname: "ESPOLIO DE HAROLDO CASTELLO BRANCO",
+        cpf: '508218908',
+        nationality: 'BRASIL',
+        civil_state: 'CASADO',
+        role: 'DIRETOR',
+        sign_in_at: Date.new(1971,9,30)
+      }
+    ]
+
+    assert_equal expected, subject.admin_group(data)
+  end 
+
   test '.count_searches_serasa' do
     data = [
       {
