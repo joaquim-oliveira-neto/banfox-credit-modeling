@@ -1,6 +1,8 @@
 module Risk
   module Referee
     class Base
+      attr_reader :code, :title, :description, :services
+
       RED_FLAG = -1
       YELLOW_FLAG = 1
       GREEN_FLAG = 0
@@ -12,33 +14,11 @@ module Risk
       }.each do |method, flag|
         define_method(:"#{method}!") do
           ::Risk::Repository::KeyIndicator.create(
-            title: self.class.title,
-            description: self.class.description,
-            code: self.class.code,
+            title: self.title,
+            description: self.description,
+            code: self.code,
             flag: flag
           )
-        end
-      end
-
-      class << self
-        attr_reader :code, :title, :description, :services
-
-        def configure_identifier(**params)
-          @code = params[:code] unless params[:code].nil?
-          @title = params[:title] unless params[:title].nil?
-          @description = params[:description] unless params[:description].nil?
-        end
-
-        def prefetch_services(*services)
-          @@services = services
-        end
-
-        def services
-          @@services
-        end
-
-        def call(**args)
-          new.call(args)
         end
       end
     end
