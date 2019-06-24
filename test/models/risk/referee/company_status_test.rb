@@ -35,11 +35,11 @@ module Risk
       end
 
       test "generates a green flag if status is 'ativo'" do
-        presenter = mock()
-        presenter.stubs(:status).returns('ativo')
+        entity = mock()
+        entity.stubs(:status).returns('ativo')
 
         Risk::Repository::KeyIndicator.expects(:create).with(green_params)
-        Risk::Referee::CompanyStatus.call(company: presenter)
+        Risk::Referee::CompanyStatus.call(company: entity)
       end
 
       test 'genereates a yellow flag is status was not found' do

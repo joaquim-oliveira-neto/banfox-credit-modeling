@@ -8,7 +8,14 @@ module Risk
 
         def call
           {
-            summary: Risk::Entity::Serasa::CompanySummary.new(summary(@data))
+            summary: Risk::Entity::Serasa::CompanySummary.new(summary(@data)),
+            corporate_control: Risk::Entity::Serasa::CorporateControl.new(corporate_control(@data))
+          }
+        end
+
+        def corporate_control(data)
+          {
+            share_capital: share_capital(@data),
           }
         end
 
@@ -39,6 +46,10 @@ module Risk
               last_occurrence: lawsuit_last_occurrence(data['informacoes_concentre_acoes_judiciais']),
             }
           }.with_indifferent_access
+        end
+
+        def share_capital(data)
+          data["valor_capital_social"]
         end
 
         def last_pefin(data)
