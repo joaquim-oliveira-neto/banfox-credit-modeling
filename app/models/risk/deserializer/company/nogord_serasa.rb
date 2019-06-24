@@ -15,7 +15,8 @@ module Risk
 
         def corporate_control(data)
           {
-            share_capital: share_capital(@data),
+            share_capital: data['controle_societario_capital_social']["valor_capital_social"],
+            realized_capital: data['controle_societario_capital_social']['valor_capital_realizado']
           }
         end
 
@@ -49,7 +50,6 @@ module Risk
         end
 
         def share_capital(data)
-          data["valor_capital_social"]
         end
 
         def last_pefin(data)
