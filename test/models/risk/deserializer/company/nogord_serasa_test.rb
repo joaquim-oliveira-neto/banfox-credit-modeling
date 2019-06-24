@@ -16,7 +16,6 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
 
   test '.call' do
     subject.expects(:summary)
-    subject.expects(:share_capital)
 
     data = subject.call
     assert_equal true, data.keys.include?(:summary)
@@ -54,12 +53,27 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
     assert_equal expected, subject.summary(serasa_data)
   end
 
-  test '.share_capital' do
+  test '.corporate_control' do
     data = {
-     "valor_capital_social"=>651000
+      "controle_societario_capital_social": {
+        "data_ultima_atualizacao": "09/12/2018",
+        "valor_capital_realizado": 651000,
+        "valor_capital_autorizado": 0,
+        "descricao_nacionalidade": "BRASIL",
+        "descricao_origem": "PRIVADO",
+        "descricao_natureza": "FECHADO",
+        "monto_controle_societario_junta_comercial": "",
+        "situacao_capital_total": "F",
+        "valor_capital_social": 651000
+      }
+    }.with_indifferent_access
+
+    expected = {
+      share_capital: 651000,
+      realized_capital: 651000
     }
 
-    assert_equal 651000, subject.share_capital(data)
+    assert_equal expected, subject.corporate_control(data)
   end
 
   test '.count_searches_serasa' do
