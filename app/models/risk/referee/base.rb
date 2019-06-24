@@ -3,14 +3,16 @@ module Risk
     class Base
       attr_reader :code, :title, :description, :services
 
-      RED_FLAG = -1
+      GRAY_FLAG   = -1
+      GREEN_FLAG  = 0
       YELLOW_FLAG = 1
-      GREEN_FLAG = 0
+      RED_FLAG    = 2
       # Methods to create KeyRiskIdentifier with its respectives flags
       {
         red: RED_FLAG,
         green: GREEN_FLAG,
-        yellow: YELLOW_FLAG
+        yellow: YELLOW_FLAG,
+        gray: GRAY_FLAG,
       }.each do |method, flag|
         define_method(:"#{method}!") do
           ::Risk::Repository::KeyIndicator.create(
