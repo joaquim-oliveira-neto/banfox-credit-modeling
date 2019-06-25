@@ -2,7 +2,7 @@ require 'test_helper'
 
 module Risk
   module Referee
-    class MainTest < ActiveSupport::TestCase
+    class BaseTest < ActiveSupport::TestCase
       class MockedService
       end
 
