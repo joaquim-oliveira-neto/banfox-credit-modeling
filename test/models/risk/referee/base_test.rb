@@ -37,21 +37,21 @@ module Risk
         algorithm = SpecificReferee.new
         kri = algorithm.red!
         expected = kri.flag
-        assert_equal expected, Risk::Referee::Base::RED_FLAG
+        assert_equal expected, Risk::KeyIndicator::RED_FLAG
       end
 
       test 'generate a KeyRiskIndicator with a yellow flag' do
         algorithm = SpecificReferee.new
         kri = algorithm.yellow!
         expected = kri.flag
-        assert_equal expected, Risk::Referee::Base::YELLOW_FLAG
+        assert_equal expected, Risk::KeyIndicator::YELLOW_FLAG
       end
 
       test 'generate a KeyRiskIndicator with a green flag' do
         algorithm = SpecificReferee.new
         kri = algorithm.green!
         expected = kri.flag
-        assert_equal expected, Risk::Referee::Base::GREEN_FLAG
+        assert_equal expected, Risk::KeyIndicator::GREEN_FLAG
       end
     end
   end

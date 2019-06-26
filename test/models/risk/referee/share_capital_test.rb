@@ -14,7 +14,7 @@ class Risk::Referee::ShareCapitalTest < ActiveSupport::TestCase
       code: '',
       title: '',
       description: '',
-      flag: Risk::Referee::ShareCapital::RED_FLAG
+      flag: Risk::KeyIndicator::RED_FLAG
     })
 
     @referee.call
@@ -25,7 +25,7 @@ class Risk::Referee::ShareCapitalTest < ActiveSupport::TestCase
       code: '',
       title: '',
       description: '',
-      flag: Risk::Referee::ShareCapital::YELLOW_FLAG
+      flag: Risk::KeyIndicator::YELLOW_FLAG
     })
 
     @entity.share_capital = 15_000
@@ -38,7 +38,7 @@ class Risk::Referee::ShareCapitalTest < ActiveSupport::TestCase
       code: '',
       title: '',
       description: '',
-      flag: Risk::Referee::ShareCapital::GREEN_FLAG
+      flag: Risk::KeyIndicator::GREEN_FLAG
     })
 
     @entity.share_capital = 50_000

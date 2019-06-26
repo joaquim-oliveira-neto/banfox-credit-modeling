@@ -16,7 +16,7 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
       title: '',
       code: '',
       description: '',
-      flag: Risk::Referee::PefinQuantityEvolution::GRAY_FLAG
+      flag: Risk::KeyIndicator::GRAY_FLAG
     })
 
     Risk::Referee::PefinQuantityEvolution.new(@company_summaries).call
@@ -44,7 +44,7 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
       title: '',
       code: '',
       description: '',
-      flag: Risk::Referee::PefinQuantityEvolution::GREEN_FLAG
+      flag: Risk::KeyIndicator::GREEN_FLAG
     })
 
     Risk::Referee::PefinQuantityEvolution.new(@company_summaries).call
@@ -72,7 +72,7 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
       title: '',
       code: '',
       description: '',
-      flag: Risk::Referee::PefinQuantityEvolution::YELLOW_FLAG
+      flag: Risk::KeyIndicator::YELLOW_FLAG
     })
 
     Risk::Referee::PefinQuantityEvolution.new(@company_summaries).call
@@ -100,7 +100,7 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
       title: '',
       code: '',
       description: '',
-      flag: Risk::Referee::PefinQuantityEvolution::RED_FLAG
+      flag: Risk::KeyIndicator::RED_FLAG
     })
 
     Risk::Referee::PefinQuantityEvolution.new(@company_summaries).call
