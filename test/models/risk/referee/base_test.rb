@@ -3,8 +3,6 @@ require 'test_helper'
 module Risk
   module Referee
     class BaseTest < ActiveSupport::TestCase
-      class MockedService
-      end
 
       #Mocked classes
       class SpecificReferee < Risk::Referee::Base
