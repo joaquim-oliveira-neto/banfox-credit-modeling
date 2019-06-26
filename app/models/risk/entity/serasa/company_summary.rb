@@ -30,6 +30,12 @@
   :last_ocurrence
 }
 
+@entity.check_ccf = {
+  :quantity
+  :value
+  :last_occurrence
+}
+
 =end
 module Risk
   module Entity
@@ -39,7 +45,8 @@ module Risk
                       :pefin,
                       :refin,
                       :protest,
-                      :lawsuit
+                      :lawsuit,
+                      :check_ccf
       end
     end
   end

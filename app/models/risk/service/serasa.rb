@@ -14,7 +14,7 @@ module Risk
       def call
         data = fetch_data(cnpj)
 
-        Risk::Deserializer::Company::NogordSerasa.new(data).call
+        Risk::Deserializer::NogordSerasa.new(data).call
       end
 
       def fetch_data(cnpj)

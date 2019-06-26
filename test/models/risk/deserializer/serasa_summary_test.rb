@@ -1,8 +1,8 @@
 require 'test_helper'
 
-class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
+class Risk::Deserializer::SerasaSummaryTest < ActiveSupport::TestCase
   def subject
-    @subject ||= Risk::Deserializer::Company::NogordSerasa.new(serasa_data)
+    @subject ||= Risk::Deserializer::SerasaSummary.new(serasa_data)
   end
 
   def nogord_response
@@ -15,14 +15,6 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
   end
 
   test '.call' do
-    subject.expects(:summary)
-
-    data = subject.call
-    assert_equal true, data.keys.include?(:summary)
-    assert_equal true, data.keys.include?(:corporate_control)
-  end
-
-  test '.summary' do
     expected = {
       serasa_searches: {
         quantity: 194,
@@ -47,83 +39,15 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
         quantity: 2,
         value: 762504,
         last_occurrence: Date.new(2018, 5, 28)
-      }
-    }.with_indifferent_access
-
-    assert_equal expected, subject.summary(serasa_data)
-  end
-
-  test '.corporate_control' do
-    data = {
-      "controle_societario_capital_social": {
-        "data_ultima_atualizacao": "09/12/2018",
-        "valor_capital_realizado": 651000,
-        "valor_capital_autorizado": 0,
-        "descricao_nacionalidade": "BRASIL",
-        "descricao_origem": "PRIVADO",
-        "descricao_natureza": "FECHADO",
-        "monto_controle_societario_junta_comercial": "",
-        "situacao_capital_total": "F",
-        "valor_capital_social": 651000
-      }
-    }.with_indifferent_access
-
-    expected = {
-      share_capital: 651000,
-      realized_capital: 651000
-    }
-
-    assert_equal expected, subject.corporate_control(data)
-  end
-
-  test '.admin_group' do
-    #"quadro_administrativo_detalhes": [
-    data = [
-      {
-        "identificacao": "F",
-        "cnpj_cpf_socio": "508218908",
-        "codigo_situacao_administrador": "09",
-        "data_entrada": "30/09/1971",
-        "codigo_socio_consistido": "7",
-        "cnpj_sequencia": "0000",
-        "digito_cpf": "59",
-        "nome_administrador": "ESPOLIO DE HAROLDO CASTELLO BRANCO",
-        "cargo": "DIRETOR",
-        "nacionalidade": "BRASIL",
-        "estado_civil": "CASADO",
-        "data_inicio_mandato": "30/09/1971",
-        "data_fim_mandato": "99999999",
-        "indicador_restricao": "S",
-        "codigo_cargo": "022"
-      }.with_indifferent_access
-    ]
-
-    expected = [
-      {
-        fullname: "ESPOLIO DE HAROLDO CASTELLO BRANCO",
-        cpf: '508218908',
-        nationality: 'BRASIL',
-        civil_state: 'CASADO',
-        role: 'DIRETOR',
-        sign_in_at: Date.new(1971,9,30)
-      }
-    ]
-
-    assert_equal expected, subject.admin_group(data)
-  end 
-
-  test '.count_searches_serasa' do
-    data = [
-      {
-        'quantidade_consulta_por_empresa' => 10,
-        'quantidade_consulta_por_financeira' => 15
       },
-      {
-        'quantidade_consulta_por_empresa' => 10,
-        'quantidade_consulta_por_financeira' => 15
-      }
-    ]
-    assert_equal 50, subject.count_serasa_searches(data)
+      check_ccf: {
+        quantity: 12,
+        value: 0,
+        last_occurrence: Date.new(2018, 6, 26)
+      },
+    }.with_indifferent_access
+
+    assert_equal expected, subject.call
   end
 
   test '.last_serasa_search' do
@@ -476,5 +400,57 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
     test_data = subject.lawsuit_last_occurrence(data)
 
     assert_equal Date.new(2018,5,28), test_data
+  end
+
+  test '.count_searches_serasa' do
+    data = [
+      {
+        'quantidade_consulta_por_empresa' => 10,
+        'quantidade_consulta_por_financeira' => 15
+      },
+      {
+        'quantidade_consulta_por_empresa' => 10,
+        'quantidade_consulta_por_financeira' => 15
+      }
+    ]
+    assert_equal 50, subject.count_serasa_searches(data)
+  end
+
+  test '.check_ccf' do
+    #      "informacoes_recheque_cheque_sem_fundo_ccf": [
+    input_data = [
+      {
+        "quantidade_ocorrencias": 12,
+        "data": "26/06/2018",
+        "cheque": "CCF-BB",
+        "quantidade_no_banco": 12,
+        "banco": "B DO BRASIL",
+        "agencia": "2168",
+        "cidade": "ITAPECERICA DA SERRA",
+        "uf": "SP",
+        "codigo_natureza": "",
+        "reservado_serasa": "IPZ0O0125894697044281038"
+      }.with_indifferent_access,
+      {
+        "quantidade_ocorrencias": 14,
+        "data": "26/05/2018",
+        "cheque": "CCF-BB",
+        "quantidade_no_banco": 12,
+        "banco": "B DO BRASIL",
+        "agencia": "2168",
+        "cidade": "ITAPECERICA DA SERRA",
+        "uf": "SP",
+        "codigo_natureza": "",
+        "reservado_serasa": "IPZ0O0125894697044281038"
+      }.with_indifferent_access
+    ]
+
+    expected = {
+      quantity: 12,
+      value: 0,
+      last_occurrence: Date.new(2018, 6, 26)
+    }
+
+    assert_equal expected, subject.check_ccf(input_data)
   end
 end
