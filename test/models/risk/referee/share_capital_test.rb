@@ -1,48 +1,28 @@
 require 'test_helper'
 
 class Risk::Referee::ShareCapitalTest < ActiveSupport::TestCase
+
   setup do
-    @entity = Risk::Entity::Serasa::CorporateControl.new(
-      share_capital: 6000,
-      realized_capital: 6000
-    )
-    @referee = Risk::Referee::ShareCapital.new(@entity)
+    key_indicator_factory = Risk::KeyIndicatorFactory.new
+    @entity = Risk::Entity::Serasa::CorporateControl.new
+    @referee = Risk::Referee::ShareCapital.new(key_indicator_factory, @entity)
   end
 
   test '.call generates a red flag' do
-    Risk::KeyIndicator.expects(:create).with({
-      code: '',
-      title: '',
-      description: '',
-      flag: Risk::KeyIndicator::RED_FLAG
-    })
-
+    @entity.share_capital = 6_000
+    Risk::KeyIndicator.any_instance.expects(:red!)
     @referee.call
   end
 
   test '.call generates a yellow flag' do
-    Risk::KeyIndicator.expects(:create).with({
-      code: '',
-      title: '',
-      description: '',
-      flag: Risk::KeyIndicator::YELLOW_FLAG
-    })
-
     @entity.share_capital = 15_000
-
+    Risk::KeyIndicator.any_instance.expects(:yellow!)
     @referee.call
   end
 
   test '.call generates a green flag' do
-    Risk::KeyIndicator.expects(:create).with({
-      code: '',
-      title: '',
-      description: '',
-      flag: Risk::KeyIndicator::GREEN_FLAG
-    })
-
     @entity.share_capital = 50_000
-
+    Risk::KeyIndicator.any_instance.expects(:green!)
     @referee.call
   end
 end

@@ -3,7 +3,8 @@ module Risk
     class PefinValueEvolution < Base
       # @param must be a reverse ordered array
       # @type Risk::Entity::Serasa::CompanySummary
-      def initialize(company_summaries=[])
+      def initialize(key_indicator_factory, company_summaries=[])
+        @key_indicator_factory = key_indicator_factory
         @company_summaries = company_summaries
         @code = ''
         @title = ''
@@ -12,16 +13,16 @@ module Risk
 
       def call
         if @company_summaries.size < 2
-          gray!
+          @key_indicator_factory.build(self).gray!
         else
           current_value = @company_summaries.first.pefin[:value]
           historic_value = @company_summaries.last.pefin[:value]
           if current_value <= historic_value
-            green!
+            @key_indicator_factory.build(self).green!
           elsif (current_value - historic_value).to_f / historic_value <= 0.5
-            yellow!
+            @key_indicator_factory.build(self).yellow!
           else
-            red!
+            @key_indicator_factory.build(self).red!
           end
         end
       end
