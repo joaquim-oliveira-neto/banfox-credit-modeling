@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :evidence, class: Risk::Repository::Evidence do
+  factory :evidence, class: Risk::Evidence do
     input_data { { cnpj: '96.006.288/0001-80' } }
     collected_data do
       {

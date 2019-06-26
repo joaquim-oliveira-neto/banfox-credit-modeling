@@ -15,7 +15,7 @@ module Risk
         gray: GRAY_FLAG,
       }.each do |method, flag|
         define_method(:"#{method}!") do
-          ::Risk::Repository::KeyIndicator.create(
+          ::Risk::KeyIndicator.create(
             title: self.title,
             description: self.description,
             code: self.code,

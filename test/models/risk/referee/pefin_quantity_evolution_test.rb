@@ -12,7 +12,7 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
       ),
     ]
 
-    Risk::Repository::KeyIndicator.expects(:create).with({
+    Risk::KeyIndicator.expects(:create).with({
       title: '',
       code: '',
       description: '',
@@ -40,7 +40,7 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
       ),
     ]
 
-    Risk::Repository::KeyIndicator.expects(:create).with({
+    Risk::KeyIndicator.expects(:create).with({
       title: '',
       code: '',
       description: '',
@@ -68,7 +68,7 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
       ),
     ]
 
-    Risk::Repository::KeyIndicator.expects(:create).with({
+    Risk::KeyIndicator.expects(:create).with({
       title: '',
       code: '',
       description: '',
@@ -96,7 +96,7 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
       ),
     ]
 
-    Risk::Repository::KeyIndicator.expects(:create).with({
+    Risk::KeyIndicator.expects(:create).with({
       title: '',
       code: '',
       description: '',

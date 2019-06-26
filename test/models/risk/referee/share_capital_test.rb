@@ -10,7 +10,7 @@ class Risk::Referee::ShareCapitalTest < ActiveSupport::TestCase
   end
 
   test '.call generates a red flag' do
-    Risk::Repository::KeyIndicator.expects(:create).with({
+    Risk::KeyIndicator.expects(:create).with({
       code: '',
       title: '',
       description: '',
@@ -21,7 +21,7 @@ class Risk::Referee::ShareCapitalTest < ActiveSupport::TestCase
   end
 
   test '.call generates a yellow flag' do
-    Risk::Repository::KeyIndicator.expects(:create).with({
+    Risk::KeyIndicator.expects(:create).with({
       code: '',
       title: '',
       description: '',
@@ -34,7 +34,7 @@ class Risk::Referee::ShareCapitalTest < ActiveSupport::TestCase
   end
 
   test '.call generates a green flag' do
-    Risk::Repository::KeyIndicator.expects(:create).with({
+    Risk::KeyIndicator.expects(:create).with({
       code: '',
       title: '',
       description: '',
