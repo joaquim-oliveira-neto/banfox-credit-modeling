@@ -1,6 +1,6 @@
 module Risk
   module Deserializer
-    class SerasaSearches
+    class SerasaSummarySearches
       def call(data)
         current_date = Date.current
         current_year_two_digits = current_date.year - 2000

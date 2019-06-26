@@ -1,9 +1,9 @@
 require 'test_helper'
 
-class Risk::Deserializer::SerasaSearchesTest < ActiveSupport::TestCase
+class Risk::Deserializer::SerasaSummarySearchesTest < ActiveSupport::TestCase
 
   def subject
-    @subject ||= Risk::Deserializer::SerasaSearches.new
+    @subject ||= Risk::Deserializer::SerasaSummarySearches.new
   end
   test '.call' do
     input_data = [
