@@ -1,6 +1,6 @@
 module Risk
   module Referee
-    class PefinQuantityEvolution < Base
+    class PefinValueDelta < Base
       include DeltaEvaluator
       # entities must be a chronological ordered array
       # entities must have @type Risk::Entity::Serasa::CompanySummary
@@ -14,10 +14,11 @@ module Risk
       end
 
       def call
-        historic_quantity = @entities.first.pefin[:quantity]
-        current_quantity = @entities.last.pefin[:quantity]
-        evaluate_delta_for_negative_information(historic_quantity, current_quantity)
+        historic_value = @entities.first.pefin[:value]
+        current_value = @entities.last.pefin[:value]
+        evaluate_delta_for_negative_information(historic_value, current_value)
       end
+
     end
   end
 end

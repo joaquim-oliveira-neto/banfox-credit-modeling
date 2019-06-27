@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class Risk::Referee::PefinValueEvolutionTest < ActiveSupport::TestCase
+class Risk::Referee::PefinQuantityDeltaTest < ActiveSupport::TestCase
 
   setup do
     @key_indicator_factory = Risk::KeyIndicatorFactory.new
@@ -19,10 +19,10 @@ class Risk::Referee::PefinValueEvolutionTest < ActiveSupport::TestCase
 
     Risk::KeyIndicator.any_instance.expects(:gray!)
 
-    Risk::Referee::PefinValueEvolution.new(@key_indicator_factory, @company_summaries).call
+    Risk::Referee::PefinQuantityDelta.new(@key_indicator_factory, @company_summaries).call
   end
 
-  test '.call should create green flag when the historic value is 0 and the entity is stable' do
+  test '.call should create green flag when the historic quantity is 0 and the entity is stable' do
      @company_summaries = [
       Risk::Entity::Serasa::CompanySummary.new(
         pefin: {
@@ -42,12 +42,12 @@ class Risk::Referee::PefinValueEvolutionTest < ActiveSupport::TestCase
 
     Risk::KeyIndicator.any_instance.expects(:green!)
 
-    Risk::Referee::PefinQuantityEvolution.new(@key_indicator_factory, @company_summaries).call
+    Risk::Referee::PefinQuantityDelta.new(@key_indicator_factory, @company_summaries).call
   end
 
-  test '.call should create yellow flag when the historic value is 0 and the entity is growing' do
+  test '.call should create yellow flag when the historic quantity is 0 and the entity is growing' do
      @company_summaries = [
-      Risk::Entity::Serasa::CompanySummary.new(
+       Risk::Entity::Serasa::CompanySummary.new(
         pefin: {
           quantity: 0,
           value: 0,
@@ -65,7 +65,7 @@ class Risk::Referee::PefinValueEvolutionTest < ActiveSupport::TestCase
 
     Risk::KeyIndicator.any_instance.expects(:yellow!)
 
-    Risk::Referee::PefinQuantityEvolution.new(@key_indicator_factory, @company_summaries).call
+    Risk::Referee::PefinQuantityDelta.new(@key_indicator_factory, @company_summaries).call
   end
 
   test '.call should create a green flag' do
@@ -80,7 +80,7 @@ class Risk::Referee::PefinValueEvolutionTest < ActiveSupport::TestCase
       Risk::Entity::Serasa::CompanySummary.new(
         pefin: {
           quantity: 10,
-          value: 900,
+          value: 1000,
           last_ocurrence: Date.new(2018, 12, 21)
         }
       ),
@@ -88,7 +88,7 @@ class Risk::Referee::PefinValueEvolutionTest < ActiveSupport::TestCase
 
     Risk::KeyIndicator.any_instance.expects(:green!)
 
-    Risk::Referee::PefinValueEvolution.new(@key_indicator_factory, @company_summaries).call
+    Risk::Referee::PefinQuantityDelta.new(@key_indicator_factory, @company_summaries).call
   end
 
   test '.call should create a yellow flag' do
@@ -102,8 +102,8 @@ class Risk::Referee::PefinValueEvolutionTest < ActiveSupport::TestCase
       ),
       Risk::Entity::Serasa::CompanySummary.new(
         pefin: {
-          quantity: 9,
-          value: 1500,
+          quantity: 15,
+          value: 1000,
           last_ocurrence: Date.new(2018, 12, 21)
         }
       ),
@@ -111,7 +111,7 @@ class Risk::Referee::PefinValueEvolutionTest < ActiveSupport::TestCase
 
     Risk::KeyIndicator.any_instance.expects(:yellow!)
 
-    Risk::Referee::PefinValueEvolution.new(@key_indicator_factory, @company_summaries).call
+    Risk::Referee::PefinQuantityDelta.new(@key_indicator_factory, @company_summaries).call
   end
 
   test '.call should create a red flag' do
@@ -125,8 +125,8 @@ class Risk::Referee::PefinValueEvolutionTest < ActiveSupport::TestCase
       ),
       Risk::Entity::Serasa::CompanySummary.new(
         pefin: {
-          quantity: 9,
-          value: 1600,
+          quantity: 16,
+          value: 1000,
           last_ocurrence: Date.new(2018, 12, 21)
         }
       ),
@@ -134,6 +134,6 @@ class Risk::Referee::PefinValueEvolutionTest < ActiveSupport::TestCase
 
     Risk::KeyIndicator.any_instance.expects(:red!)
 
-    Risk::Referee::PefinValueEvolution.new(@key_indicator_factory, @company_summaries).call
+    Risk::Referee::PefinQuantityDelta.new(@key_indicator_factory, @company_summaries).call
   end
 end

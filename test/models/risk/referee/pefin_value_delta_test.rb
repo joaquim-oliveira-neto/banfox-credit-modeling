@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
+class Risk::Referee::PefinValueDeltaTest < ActiveSupport::TestCase
 
   setup do
     @key_indicator_factory = Risk::KeyIndicatorFactory.new
@@ -19,7 +19,7 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
 
     Risk::KeyIndicator.any_instance.expects(:gray!)
 
-    Risk::Referee::PefinQuantityEvolution.new(@key_indicator_factory, @company_summaries).call
+    Risk::Referee::PefinValueDelta.new(@key_indicator_factory, @company_summaries).call
   end
 
   test '.call should create green flag when the historic value is 0 and the entity is stable' do
@@ -42,12 +42,12 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
 
     Risk::KeyIndicator.any_instance.expects(:green!)
 
-    Risk::Referee::PefinQuantityEvolution.new(@key_indicator_factory, @company_summaries).call
+    Risk::Referee::PefinValueDelta.new(@key_indicator_factory, @company_summaries).call
   end
 
   test '.call should create yellow flag when the historic value is 0 and the entity is growing' do
      @company_summaries = [
-       Risk::Entity::Serasa::CompanySummary.new(
+      Risk::Entity::Serasa::CompanySummary.new(
         pefin: {
           quantity: 0,
           value: 0,
@@ -65,7 +65,7 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
 
     Risk::KeyIndicator.any_instance.expects(:yellow!)
 
-    Risk::Referee::PefinQuantityEvolution.new(@key_indicator_factory, @company_summaries).call
+    Risk::Referee::PefinValueDelta.new(@key_indicator_factory, @company_summaries).call
   end
 
   test '.call should create a green flag' do
@@ -80,7 +80,7 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
       Risk::Entity::Serasa::CompanySummary.new(
         pefin: {
           quantity: 10,
-          value: 1000,
+          value: 900,
           last_ocurrence: Date.new(2018, 12, 21)
         }
       ),
@@ -88,7 +88,7 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
 
     Risk::KeyIndicator.any_instance.expects(:green!)
 
-    Risk::Referee::PefinQuantityEvolution.new(@key_indicator_factory, @company_summaries).call
+    Risk::Referee::PefinValueDelta.new(@key_indicator_factory, @company_summaries).call
   end
 
   test '.call should create a yellow flag' do
@@ -102,8 +102,8 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
       ),
       Risk::Entity::Serasa::CompanySummary.new(
         pefin: {
-          quantity: 15,
-          value: 1000,
+          quantity: 9,
+          value: 1500,
           last_ocurrence: Date.new(2018, 12, 21)
         }
       ),
@@ -111,7 +111,7 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
 
     Risk::KeyIndicator.any_instance.expects(:yellow!)
 
-    Risk::Referee::PefinQuantityEvolution.new(@key_indicator_factory, @company_summaries).call
+    Risk::Referee::PefinValueDelta.new(@key_indicator_factory, @company_summaries).call
   end
 
   test '.call should create a red flag' do
@@ -125,8 +125,8 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
       ),
       Risk::Entity::Serasa::CompanySummary.new(
         pefin: {
-          quantity: 16,
-          value: 1000,
+          quantity: 9,
+          value: 1600,
           last_ocurrence: Date.new(2018, 12, 21)
         }
       ),
@@ -134,6 +134,6 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
 
     Risk::KeyIndicator.any_instance.expects(:red!)
 
-    Risk::Referee::PefinQuantityEvolution.new(@key_indicator_factory, @company_summaries).call
+    Risk::Referee::PefinValueDelta.new(@key_indicator_factory, @company_summaries).call
   end
 end
