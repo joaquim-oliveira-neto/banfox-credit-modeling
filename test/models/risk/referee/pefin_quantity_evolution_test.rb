@@ -47,18 +47,18 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
 
   test '.call should create yellow flag when the historic value is 0 and the entity is growing' do
      @company_summaries = [
+       Risk::Entity::Serasa::CompanySummary.new(
+        pefin: {
+          quantity: 0,
+          value: 0,
+          last_ocurrence: Date.new(2019, 1, 21)
+        }
+      ),
       Risk::Entity::Serasa::CompanySummary.new(
         pefin: {
           quantity: 10,
           value: 1000,
           last_ocurrence: Date.new(2018, 12, 21)
-        }
-      ),
-      Risk::Entity::Serasa::CompanySummary.new(
-        pefin: {
-          quantity: 0,
-          value: 0,
-          last_ocurrence: Date.new(2019, 1, 21)
         }
       ),
     ]
@@ -74,14 +74,14 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
         pefin: {
           quantity: 10,
           value: 1000,
-          last_ocurrence: Date.new(2018, 12, 21)
+          last_ocurrence: Date.new(2019, 1, 21)
         }
       ),
       Risk::Entity::Serasa::CompanySummary.new(
         pefin: {
           quantity: 10,
           value: 1000,
-          last_ocurrence: Date.new(2019, 1, 21)
+          last_ocurrence: Date.new(2018, 12, 21)
         }
       ),
     ]
@@ -95,16 +95,16 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
     @company_summaries = [
       Risk::Entity::Serasa::CompanySummary.new(
         pefin: {
-          quantity: 15,
+          quantity: 10,
           value: 1000,
-          last_ocurrence: Date.new(2018, 12, 21)
+          last_ocurrence: Date.new(2019, 1, 21)
         }
       ),
       Risk::Entity::Serasa::CompanySummary.new(
         pefin: {
-          quantity: 10,
+          quantity: 15,
           value: 1000,
-          last_ocurrence: Date.new(2019, 1, 21)
+          last_ocurrence: Date.new(2018, 12, 21)
         }
       ),
     ]
@@ -118,16 +118,16 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
     @company_summaries = [
       Risk::Entity::Serasa::CompanySummary.new(
         pefin: {
-          quantity: 16,
+          quantity: 10,
           value: 1000,
-          last_ocurrence: Date.new(2018, 12, 21)
+          last_ocurrence: Date.new(2019, 1, 21)
         }
       ),
       Risk::Entity::Serasa::CompanySummary.new(
         pefin: {
-          quantity: 10,
+          quantity: 16,
           value: 1000,
-          last_ocurrence: Date.new(2019, 1, 21)
+          last_ocurrence: Date.new(2018, 12, 21)
         }
       ),
     ]

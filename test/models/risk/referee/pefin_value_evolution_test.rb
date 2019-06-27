@@ -49,16 +49,16 @@ class Risk::Referee::PefinValueEvolutionTest < ActiveSupport::TestCase
      @company_summaries = [
       Risk::Entity::Serasa::CompanySummary.new(
         pefin: {
-          quantity: 10,
-          value: 1000,
-          last_ocurrence: Date.new(2018, 12, 21)
+          quantity: 0,
+          value: 0,
+          last_ocurrence: Date.new(2019, 1, 21)
         }
       ),
       Risk::Entity::Serasa::CompanySummary.new(
         pefin: {
-          quantity: 0,
-          value: 0,
-          last_ocurrence: Date.new(2019, 1, 21)
+          quantity: 10,
+          value: 1000,
+          last_ocurrence: Date.new(2018, 12, 21)
         }
       ),
     ]
@@ -73,15 +73,15 @@ class Risk::Referee::PefinValueEvolutionTest < ActiveSupport::TestCase
       Risk::Entity::Serasa::CompanySummary.new(
         pefin: {
           quantity: 10,
-          value: 900,
-          last_ocurrence: Date.new(2018, 12, 21)
+          value: 1000,
+          last_ocurrence: Date.new(2019, 1, 21)
         }
       ),
       Risk::Entity::Serasa::CompanySummary.new(
         pefin: {
           quantity: 10,
-          value: 1000,
-          last_ocurrence: Date.new(2019, 1, 21)
+          value: 900,
+          last_ocurrence: Date.new(2018, 12, 21)
         }
       ),
     ]
@@ -95,16 +95,16 @@ class Risk::Referee::PefinValueEvolutionTest < ActiveSupport::TestCase
     @company_summaries = [
       Risk::Entity::Serasa::CompanySummary.new(
         pefin: {
-          quantity: 9,
-          value: 1500,
-          last_ocurrence: Date.new(2018, 12, 21)
+          quantity: 10,
+          value: 1000,
+          last_ocurrence: Date.new(2019, 1, 21)
         }
       ),
       Risk::Entity::Serasa::CompanySummary.new(
         pefin: {
-          quantity: 10,
-          value: 1000,
-          last_ocurrence: Date.new(2019, 1, 21)
+          quantity: 9,
+          value: 1500,
+          last_ocurrence: Date.new(2018, 12, 21)
         }
       ),
     ]
@@ -118,16 +118,16 @@ class Risk::Referee::PefinValueEvolutionTest < ActiveSupport::TestCase
     @company_summaries = [
       Risk::Entity::Serasa::CompanySummary.new(
         pefin: {
-          quantity: 9,
-          value: 1600,
-          last_ocurrence: Date.new(2018, 12, 21)
+          quantity: 10,
+          value: 1000,
+          last_ocurrence: Date.new(2019, 1, 21)
         }
       ),
       Risk::Entity::Serasa::CompanySummary.new(
         pefin: {
-          quantity: 10,
-          value: 1000,
-          last_ocurrence: Date.new(2019, 1, 21)
+          quantity: 9,
+          value: 1600,
+          last_ocurrence: Date.new(2018, 12, 21)
         }
       ),
     ]

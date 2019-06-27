@@ -2,7 +2,7 @@ module Risk
   module Referee
     module DeltaEvaluator
 
-      def evaluate_delta_for_negative_information(current, historic)
+      def evaluate_delta_for_negative_information(historic, current)
         if @entities.size < 2
           @key_indicator_factory.build(self).gray!
         else
