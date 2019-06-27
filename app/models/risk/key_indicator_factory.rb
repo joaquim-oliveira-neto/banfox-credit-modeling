@@ -7,6 +7,7 @@ module Risk
         code: referee.code,
         title: referee.title,
         description: referee.description,
+        params: referee.params,
       )
     end
 
