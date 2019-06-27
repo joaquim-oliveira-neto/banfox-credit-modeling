@@ -12,14 +12,31 @@ module Risk
       end
 
       def call
-        data = fetch_data(cnpj)
+        begin
+          external_data = fetch_data(cnpj)
+          unless external_data.nil?
+            deserialized_data = Risk::Deserializer::NogordSerasa.new(external_data).call
+          end
+        rescue Exception => e
+          Rollbar.error(e, 'Error trying to deserialize nogord serasa response')
+        else
+          return deserialized_data
+        end
 
-        Risk::Deserializer::Company::NogordSerasa.new(data).call
+        false
       end
 
       def fetch_data(cnpj)
-        @data ||= Risk::Fetcher::NogordSerasa.call(cnpj)
-        @data['info']['external_sources'].first['data']
+        begin
+          @data ||= Risk::Fetcher::NogordSerasa.call(cnpj)
+          external_source_data = @data['info']['external_sources'].first['data']
+        rescue Exception => e
+          Rollbar.error(e, 'Error calling Risk::Fetcher::NogordSerasa')
+        else
+          return external_source_data
+        end
+
+        nil
       end
     end
   end
