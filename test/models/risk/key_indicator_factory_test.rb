@@ -11,6 +11,7 @@ class Risk::KeyIndicatorFactoryTest < ActiveSupport::TestCase
       @code = 'Risk 0001'
       @title = 'Very specific referee'
       @description = 'Very specific description'
+      @params = {green_limit: 0, yellow_limit: 0.5}
     end
 
     def call
@@ -31,6 +32,7 @@ class Risk::KeyIndicatorFactoryTest < ActiveSupport::TestCase
       code: 'Risk 0001',
       title: 'Very specific referee',
       description: 'Very specific description',
+      params: {green_limit: 0, yellow_limit: 0.5}
     })
 
     subject.build(specific_referee)
