@@ -25,14 +25,14 @@ class Risk::Service::ReportTest < ActiveSupport::TestCase
   end
 
   test 'creates a KeyIndicator' do
-    assert_difference 'Risk::Repository::KeyIndicatorReport.count' do
+    assert_difference 'Risk::KeyIndicatorReport.count' do
       described_class.call(input_data(correct_cnpj), 'new_seller')
     end
   end
 
   test 'returns a KeyIndicatorReport' do
     report = described_class.call(input_data(correct_cnpj), 'new_seller')
-    assert_equal Risk::Repository::KeyIndicatorReport, report.class
+    assert_equal Risk::KeyIndicatorReport, report.class
   end
 
   test 'choose new_seller pipeline' do

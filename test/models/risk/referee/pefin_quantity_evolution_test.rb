@@ -1,6 +1,11 @@
 require 'test_helper'
 
 class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
+
+  setup do
+    @key_indicator_factory = Risk::KeyIndicatorFactory.new
+  end
+
   test '.call should create a gray flag if there is only one company_summary' do
     @company_summaries = [
       Risk::Entity::Serasa::CompanySummary.new(
@@ -12,14 +17,9 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
       ),
     ]
 
-    Risk::Repository::KeyIndicator.expects(:create).with({
-      title: '',
-      code: '',
-      description: '',
-      flag: Risk::Referee::PefinQuantityEvolution::GRAY_FLAG
-    })
+    Risk::KeyIndicator.any_instance.expects(:gray!)
 
-    Risk::Referee::PefinQuantityEvolution.new(@company_summaries).call
+    Risk::Referee::PefinQuantityEvolution.new(@key_indicator_factory, @company_summaries).call
   end
 
   test '.call should create a green flag' do
@@ -40,14 +40,9 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
       ),
     ]
 
-    Risk::Repository::KeyIndicator.expects(:create).with({
-      title: '',
-      code: '',
-      description: '',
-      flag: Risk::Referee::PefinQuantityEvolution::GREEN_FLAG
-    })
+    Risk::KeyIndicator.any_instance.expects(:green!)
 
-    Risk::Referee::PefinQuantityEvolution.new(@company_summaries).call
+    Risk::Referee::PefinQuantityEvolution.new(@key_indicator_factory, @company_summaries).call
   end
 
   test '.call should create a yellow flag' do
@@ -68,14 +63,9 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
       ),
     ]
 
-    Risk::Repository::KeyIndicator.expects(:create).with({
-      title: '',
-      code: '',
-      description: '',
-      flag: Risk::Referee::PefinQuantityEvolution::YELLOW_FLAG
-    })
+    Risk::KeyIndicator.any_instance.expects(:yellow!)
 
-    Risk::Referee::PefinQuantityEvolution.new(@company_summaries).call
+    Risk::Referee::PefinQuantityEvolution.new(@key_indicator_factory, @company_summaries).call
   end
 
   test '.call should create a red flag' do
@@ -96,13 +86,8 @@ class Risk::Referee::PefinQuantityEvolutionTest < ActiveSupport::TestCase
       ),
     ]
 
-    Risk::Repository::KeyIndicator.expects(:create).with({
-      title: '',
-      code: '',
-      description: '',
-      flag: Risk::Referee::PefinQuantityEvolution::RED_FLAG
-    })
+    Risk::KeyIndicator.any_instance.expects(:red!)
 
-    Risk::Referee::PefinQuantityEvolution.new(@company_summaries).call
+    Risk::Referee::PefinQuantityEvolution.new(@key_indicator_factory, @company_summaries).call
   end
 end
