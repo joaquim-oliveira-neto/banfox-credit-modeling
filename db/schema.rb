@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_27_222211) do
+ActiveRecord::Schema.define(version: 2019_07_01_180056) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,12 +22,26 @@ ActiveRecord::Schema.define(version: 2019_06_27_222211) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
+  end
+
   create_table "evidences", force: :cascade do |t|
     t.jsonb "input_data"
     t.jsonb "collected_data"
     t.string "referee_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "external_data", force: :cascade do |t|
+    t.string "source"
+    t.jsonb "raw_data"
+    t.bigint "key_indicator_report_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.jsonb "query"
+    t.datetime "ttl"
+    t.index ["key_indicator_report_id"], name: "index_external_data_on_key_indicator_report_id"
   end
 
   create_table "key_indicator_reports", force: :cascade do |t|
@@ -71,6 +85,7 @@ ActiveRecord::Schema.define(version: 2019_06_27_222211) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "external_data", "key_indicator_reports"
   add_foreign_key "report_requests", "company_reports"
   add_foreign_key "report_requests", "users"
 end

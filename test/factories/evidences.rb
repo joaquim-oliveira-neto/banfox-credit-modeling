@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: evidences
+#
+#  id             :bigint           not null, primary key
+#  input_data     :jsonb
+#  collected_data :jsonb
+#  referee_name   :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#
+
 FactoryBot.define do
   factory :evidence, class: Risk::Evidence do
     input_data { { cnpj: '96.006.288/0001-80' } }

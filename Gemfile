@@ -30,6 +30,12 @@ gem 'httparty'
 # Used to validate format of cnpj and cpf
 gem 'cpf_cnpj', git: 'https://github.com/fnando/cpf_cnpj.git'
 
+# Used to create comments on active-record models with it's database mirrored attributes
+gem 'annotate', git: 'https://github.com/ctran/annotate_models.git'
+
+# Used to log events
+gem 'rollbar'
+
 group :development do
   gem 'web-console', '>= 3.3.0'
   # For the Visual Studio Code

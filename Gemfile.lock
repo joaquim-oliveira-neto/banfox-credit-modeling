@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/ctran/annotate_models.git
+  revision: 111640d077836ced23cfffb882c93e40968ab9d9
+  specs:
+    annotate (2.7.5)
+      activerecord (>= 3.2, < 7.0)
+      rake (>= 10.4, < 13.0)
+
+GIT
   remote: https://github.com/fnando/cpf_cnpj.git
   revision: 7c706fea6616fc0250c1262637d7d8c7f406bc33
   specs:
@@ -150,6 +158,7 @@ GEM
     mocha (1.9.0)
       metaclass (~> 0.0.1)
     msgpack (1.3.0)
+    multi_json (1.13.1)
     multi_xml (0.6.0)
     nested_form (0.3.2)
     netrc (0.11.0)
@@ -231,6 +240,8 @@ GEM
       netrc (~> 0.8)
     reverse_markdown (1.1.0)
       nokogiri
+    rollbar (2.20.2)
+      multi_json
     rubocop (0.71.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
@@ -318,6 +329,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  annotate!
   autoprefixer-rails
   bootsnap
   cpf_cnpj!
@@ -338,6 +350,7 @@ DEPENDENCIES
   rails_admin
   redis
   rest-client
+  rollbar
   sassc-rails
   simple_form
   solargraph
@@ -352,4 +365,4 @@ RUBY VERSION
    ruby 2.6.1p33
 
 BUNDLED WITH
-   1.17.2
+   1.17.3

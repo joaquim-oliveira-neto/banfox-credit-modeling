@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :key_risk_identifier do
+  factory :key_indicator, class: 'Risk::KeyIndicator' do
     name { "MyString" }
     description { "MyString" }
     flag { 1 }
