@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: key_indicators
+#
+#  id          :bigint           not null, primary key
+#  code        :string
+#  title       :string
+#  description :string
+#  flag        :integer
+#  scope       :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  params      :jsonb
+#
+
 module Risk
   class KeyIndicator < ApplicationRecord
     self.table_name = 'key_indicators'

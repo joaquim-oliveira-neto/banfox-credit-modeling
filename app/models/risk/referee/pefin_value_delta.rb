@@ -18,7 +18,6 @@ module Risk
         current_value = @entities.last.pefin[:value]
         evaluate_delta_for_negative_information(historic_value, current_value)
       end
-
     end
   end
 end

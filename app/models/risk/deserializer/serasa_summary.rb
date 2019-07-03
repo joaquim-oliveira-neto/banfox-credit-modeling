@@ -9,32 +9,119 @@ module Risk
 
       def call
         {
-          serasa_searches: {
-            quantity: count_serasa_searches(nogord_data['consultas_serasa']),
-            last_occurrence: last_serasa_search_date(nogord_data['consultas_serasa']),
-          },
-          pefin: {
-            quantity: count_pefin(nogord_data['pendencias_financeiras_pefin']),
-            value: pefin_value(nogord_data['pendencias_financeiras_pefin']),
-            last_occurrence: pefin_last_occurrence(nogord_data['pendencias_financeiras_pefin'])
-          },
-          refin: {
-            quantity: count_refin(nogord_data['pendencias_financeiras_refin']),
-            value: refin_value(nogord_data['pendencias_financeiras_refin']),
-            last_occurrence: refin_last_occurrence(nogord_data['pendencias_financeiras_refin'])
-          },
-          protest: {
-            quantity: count_protest(nogord_data['informacoes_concentre_protestos']),
-            value: protest_value(nogord_data['informacoes_concentre_protestos']),
-            last_occurrence: protest_last_occurrence(nogord_data['informacoes_concentre_protestos'])
-          },
-          lawsuit: {
+          serasa_searches: serasa_searches,
+          pefin: pefin,
+          refin: refin,
+          protest: protest,
+          lawsuit: lawsuit,
+          check_ccf: check_ccf(nogord_data["informacoes_recheque_cheque_sem_fundo_ccf"])
+        }.with_indifferent_access
+      end
+
+      def check_ccf(data)
+        begin
+          first_check_ccf = data.first
+
+          last_check_ccf = data.inject(first_check_ccf) do |current_check, check_data|
+            current_check_date = Date.parse(current_check['data'])
+            check_date = Date.parse(check_data['data'])
+            return check_data if check_date > current_check_date
+
+            current_check
+          end
+
+          data = {
+            quantity: last_check_ccf['quantidade_ocorrencias'],
+            value: 0,
+            last_occurrence: Date.parse(last_check_ccf['data'])
+          }
+        rescue Exception => e
+          Rollbar.error(e, 'Error trying to deserialize Nogord/Serasa check_ccf')
+        else
+          return data
+        end
+
+        nil
+      end
+
+
+      def lawsuit
+        begin
+          data = {
             quantity: count_lawsuit(nogord_data['informacoes_concentre_acoes_judiciais']),
             value: lawsuit_value(nogord_data['informacoes_concentre_acoes_judiciais']),
             last_occurrence: lawsuit_last_occurrence(nogord_data['informacoes_concentre_acoes_judiciais']),
-          },
-          check_ccf: check_ccf(nogord_data["informacoes_recheque_cheque_sem_fundo_ccf"])
-        }.with_indifferent_access
+          }
+        rescue Exception => e
+          Rollbar.error(e, 'Error trying to deserialize Nogord/Serasa lawsuit')
+        else
+          return data
+        end
+
+        nil
+      end
+
+      def protest
+        begin
+          data = {
+            quantity: count_protest(nogord_data['informacoes_concentre_protestos']),
+            value: protest_value(nogord_data['informacoes_concentre_protestos']),
+            last_occurrence: protest_last_occurrence(nogord_data['informacoes_concentre_protestos'])
+          }
+        rescue Exception => e
+          Rollbar.error(e, 'Error trying to deserialize Nogord/Serasa protest')
+        else
+          return data
+        end
+
+        nil
+      end
+
+      def refin
+        begin
+          data = {
+            quantity: count_refin(nogord_data['pendencias_financeiras_refin']),
+            value: refin_value(nogord_data['pendencias_financeiras_refin']),
+            last_occurrence: refin_last_occurrence(nogord_data['pendencias_financeiras_refin'])
+          }
+        rescue Exception => e
+          Rollbar.error(e, 'Error trying to deserialize Nogord/Serasa refin')
+        else
+          return data
+        end
+
+        nil
+      end
+
+      def pefin
+        begin
+          data = {
+            quantity: count_pefin(nogord_data['pendencias_financeiras_pefin']),
+            value: pefin_value(nogord_data['pendencias_financeiras_pefin']),
+            last_occurrence: pefin_last_occurrence(nogord_data['pendencias_financeiras_pefin'])
+          }
+        rescue Exception => e
+          Rollbar.error(e, 'Error trying to deserialize Nogord/Serasa pefin')
+        else
+          return data
+        end
+
+        nil
+      end
+
+      def serasa_searches
+        begin
+          data = {
+            quantity: count_serasa_searches(nogord_data['consultas_serasa']),
+            last_occurrence: last_serasa_search_date(nogord_data['consultas_serasa']),
+          }
+        rescue Exception => e
+          Rollbar.error(e, 'Error trying to deserialize Nogord/Serasa serasa_searches')
+        else
+          return data
+        end
+
+        nil
       end
 
       def count_serasa_searches(data)
@@ -158,23 +245,6 @@ module Risk
         end
       end
 
-      def check_ccf(data)
-        first_check_ccf = data.first
-
-        last_check_ccf = data.inject(first_check_ccf) do |current_check, check_data|
-          current_check_date = Date.parse(current_check['data'])
-          check_date = Date.parse(check_data['data'])
-          return check_data if check_date > current_check_date
-
-          current_check
-        end
-
-        {
-          quantity: last_check_ccf['quantidade_ocorrencias'],
-          value: 0,
-          last_occurrence: Date.parse(last_check_ccf['data'])
-        }
-      end
     end
   end
 end

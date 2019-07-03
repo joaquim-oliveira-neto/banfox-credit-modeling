@@ -1,6 +1,6 @@
 module Risk
   module Pipeline
-    class NewSeller < Base
+    class Serasa
     end
   end
 end

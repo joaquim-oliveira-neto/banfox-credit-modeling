@@ -30,7 +30,6 @@ module Risk
       def pipeline_strategy(pipeline)
         case pipeline
         when 'new_seller'
-          Risk::Pipeline::NewSeller
         end
       end
     end

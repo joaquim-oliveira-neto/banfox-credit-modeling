@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: company_reports
+#
+#  id         :bigint           not null, primary key
+#  cnpj       :string
+#  data       :jsonb
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 class CompanyReport < ApplicationRecord
   has_many :report_requests
   validates :cnpj, format: { with: /\d{14}/, message: "Retire os caracteres especiais" }
