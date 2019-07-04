@@ -1,6 +1,8 @@
-class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
+require 'test_helper'
+
+class Risk::Deserializer::SerasaSummaryTest < ActiveSupport::TestCase
   def subject
-    @subject ||= Risk::Deserializer::Company::NogordSerasa.new
+    @subject ||= Risk::Deserializer::SerasaSummary.new(serasa_data)
   end
 
   def nogord_response
@@ -12,27 +14,40 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
     nogord_response['info']['external_sources'].first['data']
   end
 
-  test '.summary' do
+  test '.call' do
     expected = {
-      serasa_searches: 194,
-      last_serasa_search_date: Date.new(2019, 6, 1)
+      serasa_searches: {
+        quantity: 194,
+        last_occurrence: Date.new(2019, 6, 1)
+      },
+      pefin: {
+        quantity: 45,
+        value: 407,
+        last_occurrence: Date.new(2019, 1, 21)
+      },
+      refin: {
+        quantity: 9,
+        value: 12857,
+        last_occurrence: Date.new(2018,11,22)
+      },
+      protest: {
+        quantity: 276,
+        value: 1560,
+        last_occurrence: Date.new(2019, 5, 9)
+      },
+      lawsuit: {
+        quantity: 2,
+        value: 762504,
+        last_occurrence: Date.new(2018, 5, 28)
+      },
+      check_ccf: {
+        quantity: 12,
+        value: 0,
+        last_occurrence: Date.new(2018, 6, 26)
+      },
     }.with_indifferent_access
 
-    assert_equal expected, subject.summary(serasa_data)
-  end
-
-  test '.count_searches_serasa' do
-    data = [
-      {
-        'quantidade_consulta_por_empresa' => 10,
-        'quantidade_consulta_por_financeira' => 15
-      },
-      {
-        'quantidade_consulta_por_empresa' => 10,
-        'quantidade_consulta_por_financeira' => 15
-      }
-    ]
-    assert_equal 50, subject.count_serasa_searches(data)
+    assert_equal expected, subject.call
   end
 
   test '.last_serasa_search' do
@@ -146,7 +161,7 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
     assert_equal 150, subject.pefin_value(data)
   end
 
-  test '.pefin_last_ocurrence' do
+  test '.pefin_last_occurrence' do
     data = [
       {
         'quantidade_pendencias_financeiras' => 45,
@@ -165,7 +180,7 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
       }
     ]
 
-    assert_equal Date.new(2019, 1 ,26), subject.pefin_last_ocurrence(data)
+    assert_equal Date.new(2019, 1 ,26), subject.pefin_last_occurrence(data)
   end
 
   test '.last_refin' do
@@ -231,7 +246,7 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
     assert_equal 150, subject.refin_value(data)
   end
 
-  test '.refin_last_ocurrence' do
+  test '.refin_last_occurrence' do
     data = [
       {
         'quantidade_refinanciamento' => 45,
@@ -245,7 +260,7 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
       }
     ]
 
-    assert_equal Date.new(2019, 1, 23), subject.refin_last_ocurrence(data)
+    assert_equal Date.new(2019, 1, 23), subject.refin_last_occurrence(data)
   end
 
   test '.last_protest' do
@@ -309,7 +324,7 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
     assert_equal 1560, subject.protest_value(data)
   end
 
-  test '.protest_last_ocurrence' do
+  test '.protest_last_occurrence' do
     data = [
       {
         "data_protesto" => "09/04/2019",
@@ -325,7 +340,7 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
       }
     ]
 
-    assert_equal Date.new(2019, 5, 9), subject.protest_last_ocurrence(data)
+    assert_equal Date.new(2019, 5, 9), subject.protest_last_occurrence(data)
   end
 
   test '.count_lawsuit' do
@@ -366,7 +381,7 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
     assert_equal 762504, subject.lawsuit_value(data)
   end
 
-  test '.lawsuit_last_ocurrence' do
+  test '.lawsuit_last_occurrence' do
     data = [
       {
         'quantidade_ocorrencias'=> 2,
@@ -382,6 +397,60 @@ class Risk::Deserializer::Company::NogordSerasaTest < ::ActiveSupport::TestCase
       }
     ]
 
-    assert_equal Date.new(2018,5,28), subject.lawsuit_last_ocurrence(data)
+    test_data = subject.lawsuit_last_occurrence(data)
+
+    assert_equal Date.new(2018,5,28), test_data
+  end
+
+  test '.count_searches_serasa' do
+    data = [
+      {
+        'quantidade_consulta_por_empresa' => 10,
+        'quantidade_consulta_por_financeira' => 15
+      },
+      {
+        'quantidade_consulta_por_empresa' => 10,
+        'quantidade_consulta_por_financeira' => 15
+      }
+    ]
+    assert_equal 50, subject.count_serasa_searches(data)
+  end
+
+  test '.check_ccf' do
+    #      "informacoes_recheque_cheque_sem_fundo_ccf": [
+    input_data = [
+      {
+        "quantidade_ocorrencias": 12,
+        "data": "26/06/2018",
+        "cheque": "CCF-BB",
+        "quantidade_no_banco": 12,
+        "banco": "B DO BRASIL",
+        "agencia": "2168",
+        "cidade": "ITAPECERICA DA SERRA",
+        "uf": "SP",
+        "codigo_natureza": "",
+        "reservado_serasa": "IPZ0O0125894697044281038"
+      }.with_indifferent_access,
+      {
+        "quantidade_ocorrencias": 14,
+        "data": "26/05/2018",
+        "cheque": "CCF-BB",
+        "quantidade_no_banco": 12,
+        "banco": "B DO BRASIL",
+        "agencia": "2168",
+        "cidade": "ITAPECERICA DA SERRA",
+        "uf": "SP",
+        "codigo_natureza": "",
+        "reservado_serasa": "IPZ0O0125894697044281038"
+      }.with_indifferent_access
+    ]
+
+    expected = {
+      quantity: 12,
+      value: 0,
+      last_occurrence: Date.new(2018, 6, 26)
+    }
+
+    assert_equal expected, subject.check_ccf(input_data)
   end
 end
