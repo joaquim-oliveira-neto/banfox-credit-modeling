@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.6.1'
+ruby '2.6.3'
 
 gem 'bootsnap', require: false
 gem 'devise'
@@ -29,6 +29,9 @@ gem 'httparty'
 
 # Used to validate format of cnpj and cpf
 gem 'cpf_cnpj', git: 'https://github.com/fnando/cpf_cnpj.git'
+
+# Used to generate JWT (Json Web Tokens https://jwt.io/)
+gem 'jwt'
 
 group :development do
   gem 'web-console', '>= 3.3.0'

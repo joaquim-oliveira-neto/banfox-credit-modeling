@@ -115,6 +115,7 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
+    jwt (2.2.1)
     kaminari (1.1.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.1.1)
@@ -328,6 +329,7 @@ DEPENDENCIES
   font-awesome-sass (~> 5.5.0)
   httparty
   jbuilder (~> 2.0)
+  jwt
   listen (~> 3.0.5)
   mocha
   pg (~> 0.21)
@@ -349,7 +351,7 @@ DEPENDENCIES
   will_paginate
 
 RUBY VERSION
-   ruby 2.6.1p33
+   ruby 2.6.3p62
 
 BUNDLED WITH
    1.17.2
