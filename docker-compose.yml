@@ -17,6 +17,13 @@ services:
     expose:
       - 6379
 
+  mongodb:
+    image: mongo:3.4-xenial
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
 volumes:
   banfox:
   postgres_data:
