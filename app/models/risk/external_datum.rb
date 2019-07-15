@@ -2,18 +2,17 @@
 #
 # Table name: external_data
 #
-#  id                      :bigint           not null, primary key
-#  source                  :string
-#  raw_data                :jsonb
-#  key_indicator_report_id :bigint
-#  created_at              :datetime         not null
-#  updated_at              :datetime         not null
-#  query                   :jsonb
-#  ttl                     :datetime
+#  id         :bigint           not null, primary key
+#  source     :string
+#  raw_data   :jsonb
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  query      :jsonb
+#  ttl        :datetime
 #
 
 module Risk
   class ExternalDatum < ApplicationRecord
-    belongs_to :key_indicator_report, class_name: 'Risk::KeyIndicatorReport'
+    has_and_belongs_to_many :key_indicator_reports
   end
 end
