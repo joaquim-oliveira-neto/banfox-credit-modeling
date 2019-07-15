@@ -9,8 +9,4 @@ class Risk::Parser::SerasaTest < ActiveSupport::TestCase
   def subject
     @parser ||= Risk::Parser::Serasa.new(raw_data)
   end
-
-  test '.parse_relato_mais should get all available tags' do
-    subject.parse_relato_mais
-  end
 end

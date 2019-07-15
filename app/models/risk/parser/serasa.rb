@@ -3,7 +3,6 @@ module Risk
     class Serasa
       attr_accessor :pefin, :refin, :partner_data
 
-
       def initialize(raw_data)
         @raw_data = raw_data
         @company_data = {}
@@ -22,7 +21,7 @@ module Risk
         @parsing_partner_data = false
       end
 
-      def parse_relato_mais
+      def call
         tags = @raw_data.split('#L').map do |line|
           [line[0...6], line[6..(line.length)]]
         end

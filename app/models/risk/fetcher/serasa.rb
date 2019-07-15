@@ -10,6 +10,9 @@ module Risk
       def name
         'serasa_api'
       end
+
+      def call
+      end
     end
   end
 end
